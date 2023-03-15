@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewModelScope
 import com.example.caloriecounter.ui.theme.CalorieCounterTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +18,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CalorieCounterTheme {
-                // A surface container using the 'background' color from the theme
+
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
                     Greeting("Android")
+                    var viewModel =  MainViewModel()
+                    viewModel.loadPropertyFoods()
                 }
             }
         }
