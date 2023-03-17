@@ -1,21 +1,19 @@
 package com.example.caloriecounter
 
-import android.annotation.SuppressLint
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 
 
 
 @Composable
-fun MainScreen(viewModel: MainViewModel){
+fun MainScreen(
+    viewModel: MainViewModel,
+    onItem: () -> Unit
+
+){
     val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
     Scaffold(bottomBar ={
         BottomNavigation {
@@ -45,7 +43,11 @@ fun MainScreen(viewModel: MainViewModel){
     },) {paddingValues ->
         when(selectedNavItem){
             NavigationItem.Home ->{
-                HomeScreen(viewModel = viewModel, paddingValues = paddingValues)
+                HomeScreen(
+                    viewModel = viewModel,
+                    paddingValues = paddingValues,
+                    onItem = onItem
+                )
             }
             NavigationItem.Favourite -> Text(text = "Favourite", color = Color.Black)
             NavigationItem.Profile -> Text(text = "Profile", color = Color.Black)

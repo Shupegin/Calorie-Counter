@@ -28,5 +28,12 @@ class MainViewModel : ViewModel() {
     fun selectNavItem(item: NavigationItem) {
         _selectedNavItem.value = item
     }
+    private val  _clickFloatingActionButton = MutableLiveData<Boolean>()
+    val clickFloatingActionButton = _clickFloatingActionButton
+    fun clickFloatingAcBtn(click : Boolean){
+        _clickFloatingActionButton.value = click
+    }
+
+
 
 }
