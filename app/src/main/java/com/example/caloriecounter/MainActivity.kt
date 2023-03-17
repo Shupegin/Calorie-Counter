@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -19,13 +21,28 @@ import kotlinx.coroutines.selects.select
 
 class MainActivity : ComponentActivity() {
 
+
+    private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CalorieCounterTheme() {
-                MainScreen()
+
+            CalorieCounterTheme {
+                MainScreen(viewModel)
             }
         }
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun actionBar(){
+    Scaffold(floatingActionButton ={
+        FloatingActionButton(onClick = { /*TODO*/ }) {
+            Icon(imageVector = Icons.Default.Add,contentDescription = "Asd")
+        }
+    }) {
+
     }
 }
 

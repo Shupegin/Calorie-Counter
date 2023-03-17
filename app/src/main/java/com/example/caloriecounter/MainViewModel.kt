@@ -1,6 +1,8 @@
 package com.example.caloriecounter
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.caloriecounter.network.ApiFactory
@@ -18,6 +20,13 @@ class MainViewModel : ViewModel() {
             Log.d("TEST","TEST = $response")
         }
 
+    }
+
+    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
+    val selectedNavItem: LiveData<NavigationItem> = _selectedNavItem
+
+    fun selectNavItem(item: NavigationItem) {
+        _selectedNavItem.value = item
     }
 
 }
