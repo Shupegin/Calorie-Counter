@@ -9,11 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.caloriecounter.dialog.FoodModel
 
 
-@Preview
+
 @Composable
-fun cardFood(){
+fun cardFood(foodModel: FoodModel){
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
@@ -30,7 +31,7 @@ fun cardFood(){
                     .padding(4.dp)
                 ){
                     Text("прием  1 :")
-                    Text(text = "Описание", modifier = Modifier.padding(start = 10.dp))
+                    Text(text = " ${foodModel.food}", modifier = Modifier.padding(start = 10.dp))
 
                 }
                 Box(modifier = Modifier.fillMaxWidth()

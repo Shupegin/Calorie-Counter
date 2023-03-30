@@ -1,4 +1,4 @@
-package com.example.caloriecounter
+package com.example.caloriecounter.pojo.GetFood
 
 import com.google.gson.annotations.SerializedName
 

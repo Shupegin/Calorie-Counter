@@ -1,12 +1,9 @@
 package com.example.caloriecounter.network
 
-import com.example.caloriecounter.JsonPojoFood
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 class ApiFactory {
@@ -15,8 +12,8 @@ class ApiFactory {
 
         fun getApi(): ApiService {
             val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-                val token =
-                    "eyJhbGciOiJSUzI1NiIsImtpZCI6IjVGQUQ4RTE5MjMwOURFRUJCNzBCMzU5M0E2MDU3OUFEMUM5NjgzNDkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJYNjJPR1NNSjN1dTNDeldUcGdWNXJSeVdnMGsifQ.eyJuYmYiOjE2Nzg3Nzg2NTIsImV4cCI6MTY3ODg2NTA1MiwiaXNzIjoiaHR0cHM6Ly9vYXV0aC5mYXRzZWNyZXQuY29tIiwiYXVkIjoiYmFzaWMiLCJjbGllbnRfaWQiOiI5YmYzNzVjMzVkZjc0M2U3YmU3NDI3MjRkMGExZmQzMSIsInNjb3BlIjpbImJhc2ljIl19.s8zUpaxX3C5YZwxTBWFRfuVQFuhGmdLz_Z0-Fi0bUmvmYMJRCRslK_h5AdX_ySbBSw17UjH3VBwxdFxmrofzKgEazTWeqV7kdVS2FEr12lXZBRtzFdI9l7oDiEOo7qfUM9BF9tqQwKk3fqkYMggGywZAzWhbm395WjfuFQp13nZL_YO-1M_ieum-3e0_iYfLDlyTJ1SxK-80WaeaD9OiydIg-care0CoMw8nZFmJKCvFu2QmP8R5Ki40YDkYbBIkUDSQczgZlujky1r6l2ej_AynJZKcc29jAmeSA4NFSqeYe-9M8KyS_VOH3nMQ5VCOvlv3gQ9cU6GW5Fwm6OXkEw"
+                val token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjVGQUQ4RTE5MjMwOURFRUJCNzBCMzU5M0E2MDU3OUFEMUM5NjgzNDkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJYNjJPR1NNSjN1dTNDeldUcGdWNXJSeVdnMGsifQ.eyJuYmYiOjE2Nzk2MzI4OTIsImV4cCI6MTY3OTcxOTI5MiwiaXNzIjoiaHR0cHM6Ly9vYXV0aC5mYXRzZWNyZXQuY29tIiwiYXVkIjoiYmFzaWMiLCJjbGllbnRfaWQiOiI5YmYzNzVjMzVkZjc0M2U3YmU3NDI3MjRkMGExZmQzMSIsInNjb3BlIjpbImJhc2ljIl19.BEeZEOEFK3rebTYJxWnXoTMHhmmZj3MIh9L6_kwCt06gQH6hCqgQ7vms3Xyi0-H4nh96b-3qCkJuD3Qw0i21zPWBYO9mlSF1Mx9J8XMdDNvQK2D6BuqTz5boCmQhabr1VP4PSPYcVtBwLBdFas1wsOJuQR-6zM8tR7OJjQsjQor2phgYWJI10sTDEyT9CsV0bdPlditkloKUVzuPk_CVOm76Ll2Vh69Ep83lkG0w_wMgmxhn3Kl6VOLJ8uf3b4Vx62tz71zjxEExyVarISOqPvTPzLUdNsw88sLxAyy7d02-ERtZTK2QuZtapdJi4ad5_1v4Ji18mFDO95cB0nbJGg"
+
                 val request =
                     chain.request().newBuilder().addHeader("Authorization", "Bearer ${token}")
                         .build()
@@ -31,6 +28,7 @@ class ApiFactory {
 
             return retrofit.create()
         }
+
     }
 /*
     private interface ApiService {

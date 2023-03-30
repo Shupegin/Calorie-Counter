@@ -5,14 +5,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-
+import androidx.lifecycle.LifecycleOwner
+import com.example.caloriecounter.dialog.FoodModel
 
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
-    onItem: () -> Unit
-
+    onItem: () -> Unit,
+    owner: LifecycleOwner
 ){
     val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
     Scaffold(bottomBar ={
@@ -46,7 +47,8 @@ fun MainScreen(
                 HomeScreen(
                     viewModel = viewModel,
                     paddingValues = paddingValues,
-                    onItem = onItem
+                    onItem = onItem,
+                    owner = owner
                 )
             }
             NavigationItem.Favourite -> Text(text = "Favourite", color = Color.Black)
