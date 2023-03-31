@@ -3,10 +3,15 @@ package com.example.caloriecounter.dialog
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.caloriecounter.MainViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun dialog(dialogState: MutableState<Boolean>, viewModel: MainViewModel){
+fun dialog(dialogState: MutableState<Boolean>,
+           viewModel: MainViewModel,
+           lifecycleScope: LifecycleCoroutineScope
+){
     var userfood by remember { mutableStateOf("") }
         AlertDialog(
             onDismissRequest = {
@@ -33,7 +38,9 @@ fun dialog(dialogState: MutableState<Boolean>, viewModel: MainViewModel){
                 Button(onClick = {
                     val foodModel = FoodModel(food = userfood)
 
-                    viewModel.addInfoFoodBtn(foodModel)
+                    lifecycleScope.launch {
+                        viewModel.addInfoFoodBtn(foodModel)
+                    }
                     dialogState.value = false},
 
                     ) {

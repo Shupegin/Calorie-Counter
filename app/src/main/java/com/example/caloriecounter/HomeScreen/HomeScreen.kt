@@ -28,9 +28,9 @@ import com.example.caloriecounter.dialog.dialog
 @Composable
 fun HomeScreen(
     viewModel: MainViewModel,
-    paddingValues: PaddingValues,
     onItem: () -> Unit,
-    owner: LifecycleOwner
+    owner: LifecycleOwner,
+    paddingValues: PaddingValues
 ){
 
 

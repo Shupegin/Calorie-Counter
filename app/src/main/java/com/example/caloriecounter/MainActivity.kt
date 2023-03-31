@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.caloriecounter.dialog.FoodModel
 import com.example.caloriecounter.dialog.dialog
 import com.example.caloriecounter.ui.theme.CalorieCounterTheme
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -27,11 +29,10 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf(false)
                 }
                 if (dialogState.value){
-                    dialog(dialogState, viewModel)
+                    dialog(dialogState, viewModel, lifecycleScope = lifecycleScope)
                 }
-                MainScreen(viewModel, onItem = { dialogState.value = true}, this )
 
-
+                MainScreen(viewModel, onItem = { dialogState.value = true}, this)
 
             }
         }

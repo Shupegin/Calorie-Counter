@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import com.example.caloriecounter.dialog.FoodModel
 
@@ -13,7 +14,8 @@ import com.example.caloriecounter.dialog.FoodModel
 fun MainScreen(
     viewModel: MainViewModel,
     onItem: () -> Unit,
-    owner: LifecycleOwner
+    owner: LifecycleOwner,
+
 ){
     val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
     Scaffold(bottomBar ={
