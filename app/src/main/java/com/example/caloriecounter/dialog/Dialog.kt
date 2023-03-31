@@ -7,7 +7,7 @@ import com.example.caloriecounter.MainViewModel
 
 @Composable
 fun dialog(dialogState: MutableState<Boolean>, viewModel: MainViewModel){
-    var username by remember { mutableStateOf("") }
+    var userfood by remember { mutableStateOf("") }
         AlertDialog(
             onDismissRequest = {
                 dialogState.value = false
@@ -15,8 +15,8 @@ fun dialog(dialogState: MutableState<Boolean>, viewModel: MainViewModel){
             title = { Text(text = "Дата: ") },
 
             text = {OutlinedTextField(
-                value = username,
-                onValueChange = { username =  it },
+                value = userfood,
+                onValueChange = { userfood =  it },
                 label = { Text("Что ел?") },
             )},
 
@@ -31,7 +31,7 @@ fun dialog(dialogState: MutableState<Boolean>, viewModel: MainViewModel){
 
             confirmButton = {
                 Button(onClick = {
-                    val foodModel = FoodModel("20.03.2023", username)
+                    val foodModel = FoodModel(food = userfood)
 
                     viewModel.addInfoFoodBtn(foodModel)
                     dialogState.value = false},

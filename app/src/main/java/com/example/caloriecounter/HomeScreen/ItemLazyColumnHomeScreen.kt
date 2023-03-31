@@ -1,5 +1,6 @@
 package com.example.caloriecounter
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -32,6 +33,7 @@ fun cardFood(foodModel: FoodModel){
                 ){
                     Text("прием  1 :")
                     Text(text = " ${foodModel.food}", modifier = Modifier.padding(start = 10.dp))
+                    Text(text = "Калории = ${foodModel.calories}", modifier = Modifier.padding(start = 10.dp))
 
                 }
                 Box(modifier = Modifier.fillMaxWidth()

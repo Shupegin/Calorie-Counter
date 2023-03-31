@@ -18,25 +18,29 @@ class MainViewModel : ViewModel() {
     val mapper = FoodMapper()
 
     var food_id : String? = "321312"
+    var calories = 0
 
-    init{
-        loadSearchFood()
-    }
+    private val _addInfoFood = MutableLiveData<ArrayList<FoodModel>>()
+    val addInfoFood : MutableLiveData<ArrayList<FoodModel>> = _addInfoFood
 
-    fun loadSearchFood()  {
+
+    fun loadSearchFood(nameFood : String)  {
+
         viewModelScope.launch {
-            val response = ApiFactory.getApi().loadSearchFoods(search_expression = "Sausage sandwich")
+
+            val response = ApiFactory.getApi().loadSearchFoods(search_expression = nameFood)
             val foodModelList = mapper.mapResponseToPosts(response)
-            var calories = 0
+
             for ( i in foodModelList){
                 food_id = i.food_id
 
                 var desctription = textFilter(i.desctription.toString())
                 calories += desctription
             }
+
             calories /= foodModelList.size
 
-            Log.d("TRT","Еда2  = ${calories}")
+            Log.d("RRRR","Еда0  = ${calories}")
         }
 
     }
@@ -57,13 +61,23 @@ class MainViewModel : ViewModel() {
         _selectedNavItem.value = item
     }
 
-    private val _addInfoFood = MutableLiveData<ArrayList<FoodModel>>()
-    val addInfoFood : MutableLiveData<ArrayList<FoodModel>> = _addInfoFood
+
 
     fun addInfoFoodBtn(foodModel : FoodModel) {
         val array = _addInfoFood.value ?: ArrayList()
+        var food = foodModel.food.toString()
+        loadSearchFood(food)
+
+        Thread(Runnable {
+            Thread.sleep(1000)
+            foodModel.calories = calories
+            Log.d("RRRR","Еда2  = ${calories}")
+        }).start()
+
+
         array.add(foodModel)
         _addInfoFood.value = array
+
     }
 
 
