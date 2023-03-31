@@ -1,53 +1,81 @@
 package com.example.caloriecounter
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
+import android.os.Build
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.lazy.LazyColumn
+
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import com.example.caloriecounter.dialog.FoodModel
-import com.example.caloriecounter.dialog.dialog
 
 
+
+@OptIn(ExperimentalFoundationApi::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     viewModel: MainViewModel,
+    paddingValues: PaddingValues,
     onItem: () -> Unit,
-    owner: LifecycleOwner,
-    paddingValues: PaddingValues
+    owner: LifecycleOwner
 ){
 
 
     Box(Modifier
         .background(color = Color.Gray)
     ){
-        var foodModel = ArrayList<FoodModel>()
-        viewModel.addInfoFood.observe(owner, Observer {
-            foodModel = it
-        })
 
       LazyColumn(modifier = Modifier
           .fillMaxWidth()
-          .padding(bottom = 55.dp)
-      ){
-          items(items = foodModel){foodModel->
-              cardFood(foodModel)
+          .padding(bottom = 55.dp)){
+
+          list.forEach{(dataCurrent,listFood)->
+              stickyHeader{
+                  Box(modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(1.dp)
+                      .background(Color.White),
+                      contentAlignment = Alignment.Center
+                  ){
+                      Text(text = dataCurrent.toString(), style = MaterialTheme.typography.h6)
+                  }
+              }
+              items(listFood){foodModel ->
+                  cardFood(foodModel = foodModel)
+
+              }
+            item {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                    contentAlignment = Alignment.BottomEnd,
+
+                    ) {
+                    Text(text = "Сумма калорий = 1000" )
+                }
+            }
           }
       }
 

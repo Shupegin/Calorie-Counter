@@ -1,5 +1,6 @@
 package com.example.caloriecounter
 
+import com.example.caloriecounter.pojo.SearchFood.ApiError
 import com.google.gson.annotations.SerializedName
 
 
@@ -10,4 +11,4 @@ data class Foods (
   @SerializedName("page_number"   ) var pageNumber   : String?         = null,
   @SerializedName("total_results" ) var totalResults : String?         = null
 
-)
+  )

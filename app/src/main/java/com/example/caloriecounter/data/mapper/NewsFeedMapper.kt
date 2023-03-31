@@ -1,6 +1,7 @@
 package com.example.caloriecounter.dialog
 
 
+import android.util.Log
 import com.example.caloriecounter.SearchPojoFoods
 import kotlin.math.absoluteValue
 
@@ -10,6 +11,8 @@ class FoodMapper {
         val result = mutableListOf<FoodModel>()
 
         val posts = responseDto.foods?.food
+        Log.d("RRRRR", "$posts")
+
 
 
         if (posts != null) {
@@ -21,6 +24,11 @@ class FoodMapper {
                     )
                 result.add(foodModel)
             }
+        }else{
+            val foodModel = FoodModel(
+                error = responseDto.error?.code,
+            )
+            result.add(foodModel)
         }
         return result
     }

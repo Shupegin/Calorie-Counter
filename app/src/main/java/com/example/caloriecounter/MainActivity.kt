@@ -10,20 +10,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.example.caloriecounter.dialog.FoodModel
 import com.example.caloriecounter.dialog.dialog
 import com.example.caloriecounter.ui.theme.CalorieCounterTheme
-import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
 
 
-    private val viewModel by viewModels<MainViewModel>()
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
             CalorieCounterTheme {
                 val dialogState = remember {
                     mutableStateOf(false)
@@ -32,10 +33,11 @@ class MainActivity : ComponentActivity() {
                     dialog(dialogState, viewModel, lifecycleScope = lifecycleScope)
                 }
 
-                MainScreen(viewModel, onItem = { dialogState.value = true}, this)
+                MainScreen(viewModel = viewModel, onItem = { dialogState.value = true}, this)
 
             }
         }
+
     }
 
 }

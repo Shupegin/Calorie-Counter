@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.caloriecounter.MainViewModel
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun dialog(dialogState: MutableState<Boolean>,
            viewModel: MainViewModel,
@@ -38,9 +39,7 @@ fun dialog(dialogState: MutableState<Boolean>,
                 Button(onClick = {
                     val foodModel = FoodModel(food = userfood)
 
-                    lifecycleScope.launch {
-                        viewModel.addInfoFoodBtn(foodModel)
-                    }
+                    viewModel.addInfoFoodBtn(foodModel)
                     dialogState.value = false},
 
                     ) {
