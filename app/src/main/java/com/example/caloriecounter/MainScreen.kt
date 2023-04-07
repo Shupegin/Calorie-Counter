@@ -1,5 +1,7 @@
 package com.example.caloriecounter
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -10,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.caloriecounter.dialog.FoodModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,

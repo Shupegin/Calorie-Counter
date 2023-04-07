@@ -1,5 +1,7 @@
 package com.example.caloriecounter.dialog
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color

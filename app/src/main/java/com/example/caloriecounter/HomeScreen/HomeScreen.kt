@@ -20,15 +20,16 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 
+import com.example.caloriecounter.dialog.FoodModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -46,12 +47,15 @@ fun HomeScreen(
     Box(Modifier
         .background(color = Color.Gray)
     ){
+        val foodList = viewModel.addInfoFood.observeAsState(listOf())
+
+        val list = foodList.value.groupBy { it.dataCurrent }
 
       LazyColumn(modifier = Modifier
           .fillMaxWidth()
           .padding(bottom = 55.dp)){
 
-          list.forEach{(dataCurrent,listFood)->
+          list?.forEach{(dataCurrent,listFood)->
               stickyHeader{
                   Box(modifier = Modifier
                       .fillMaxWidth()
