@@ -7,13 +7,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.caloriecounter.MainViewModel
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun dialog(dialogState: MutableState<Boolean>,
            viewModel: MainViewModel,
-           lifecycleScope: LifecycleCoroutineScope
+           lifecycleScope: LifecycleCoroutineScope,
+
 ){
     var userfood by remember { mutableStateOf("") }
         AlertDialog(
@@ -22,7 +22,8 @@ fun dialog(dialogState: MutableState<Boolean>,
             },
             title = { Text(text = "Дата: ") },
 
-            text = {OutlinedTextField(
+            text = {
+                OutlinedTextField(
                 value = userfood,
                 onValueChange = { userfood =  it },
                 label = { Text("Что ел?") },

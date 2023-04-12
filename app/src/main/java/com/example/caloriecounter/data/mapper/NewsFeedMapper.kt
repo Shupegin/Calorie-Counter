@@ -3,7 +3,6 @@ package com.example.caloriecounter.dialog
 
 import android.util.Log
 import com.example.caloriecounter.SearchPojoFoods
-import kotlin.math.absoluteValue
 
 class FoodMapper {
 
