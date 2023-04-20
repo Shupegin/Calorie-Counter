@@ -25,14 +25,10 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         setContent {
-
-//            viewModel.foodListDAO.observe(this, Observer {
-//                Log.d("RRRRR", "DAO =   $it")
-//            })
-
             CalorieCounterTheme {
                 val dialogState = remember {
                     mutableStateOf(false)

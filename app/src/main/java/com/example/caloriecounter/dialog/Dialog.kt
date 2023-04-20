@@ -49,6 +49,5 @@ fun dialog(dialogState: MutableState<Boolean>,
                     Text(text = "Ok", color = Color.Black)
                 }
             }
-
         )
 }

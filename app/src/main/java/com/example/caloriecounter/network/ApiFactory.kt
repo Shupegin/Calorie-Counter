@@ -37,9 +37,6 @@ class ApiFactory {
 
             return retrofit.create()
         }
-
-
-
     }
 
 }

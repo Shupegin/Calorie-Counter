@@ -26,10 +26,7 @@ fun cardFood(foodModel: FoodModel){
                     Text("прием  1 :")
                     Text(text = " ${foodModel.food}", modifier = Modifier.padding(start = 10.dp))
                     Text(text = "Калории = ${foodModel.calories}", modifier = Modifier.padding(start = 10.dp))
-
                 }
-
-
             }
         }
 }

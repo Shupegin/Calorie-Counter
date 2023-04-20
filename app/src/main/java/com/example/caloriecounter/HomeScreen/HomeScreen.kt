@@ -41,7 +41,7 @@ fun HomeScreen(
     Box(Modifier
         .background(color = Color.Gray)
     ){
-        val foodList = viewModel.addInfoFood.observeAsState(listOf())
+        val foodList = viewModel.foodListDAO.observeAsState(listOf())
 
         val list = foodList.value.groupBy { it.dataCurrent }
 
@@ -88,9 +88,7 @@ fun HomeScreen(
             }) {
                 Icon(imageVector = Icons.Default.Add,contentDescription = null)
             }
-
         }
     }
-
 }
 

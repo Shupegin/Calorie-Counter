@@ -3,11 +3,13 @@ package com.example.caloriecounter
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.caloriecounter.database.AppDatabase
 
 import com.example.caloriecounter.dialog.FoodMapper
 import com.example.caloriecounter.dialog.FoodModel
@@ -15,12 +17,13 @@ import com.example.caloriecounter.network.ApiFactory
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 
 class MainViewModel(application: Application): AndroidViewModel(application){
     val mapper = FoodMapper()
-    var food_id : String? = "321312"
+    var food_id : Int? = 321312
     var token : String? = ""
 
 
@@ -28,19 +31,14 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     val addInfoFood : MutableLiveData<MutableList<FoodModel>> = _addInfoFood//_addInfoFood
 
 
-//    private val db = AppDatabase.getInstance(application)
-//
-//    val foodListDAO = db.foodsInfoDao().getFoodsList()
-
-
-
-
+    private val db = AppDatabase.getInstance(application)
+    val foodListDAO = db.foodsInfoDao().getFoodsList()
 
     init {
         authorizationRequest()
         getCurrentDate()
-    }
 
+    }
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -60,26 +58,27 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         viewModelScope.launch {
             val response = ApiFactory.getApi(token.toString()).loadSearchFoods(search_expression = nameFood)
             val foodModelList = mapper.mapResponseToPosts(response)
+            Log.d("TESTER","request = ${response.foods}")
 
             var calories = 0
-            for ( item in foodModelList){
+            for (item in foodModelList){
                     food_id = item.food_id
+                try {
                     var desctription = textFilter(item.desctription.toString())
                     calories += desctription
+                }catch (e : java.lang.Exception){
+
+                }
+
             }
-
-            calories /= foodModelList.size
-
-            val array = addInfoFood.value?.toMutableList() ?: mutableListOf()
-
+//            calories /= foodModelList.size
             foodModel.calories = calories
             foodModel.dataCurrent = getCurrentDate()
-            array.apply {
-             add(foodModel)
-            }
 
-//            db.foodsInfoDao().insertFoodList(array)
-            _addInfoFood.value = array
+
+            val listFood = ArrayList<FoodModel>()
+            listFood.add(foodModel)
+            db.foodsInfoDao().insertFoodList(listFood)
         }
     }
 
@@ -95,8 +94,6 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     fun selectNavItem(item: NavigationItem) {
         _selectedNavItem.value = item
     }
-
-
 
  fun addInfoFoodBtn(foodModel : FoodModel) {
      loadSearchFood(foodModel)
