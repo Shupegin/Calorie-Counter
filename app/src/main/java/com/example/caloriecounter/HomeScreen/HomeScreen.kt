@@ -2,6 +2,7 @@ package com.example.caloriecounter
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -23,18 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
 
 
 @OptIn(ExperimentalFoundationApi::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     viewModel: MainViewModel,
-    paddingValues: PaddingValues,
     onItem: () -> Unit,
-    owner: LifecycleOwner
+    paddingValues: PaddingValues
 ){
 
 
@@ -64,14 +62,14 @@ fun HomeScreen(
                   cardFood(foodModel = foodModel)
 
               }
-            item {
+            item() {
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp),
                     contentAlignment = Alignment.BottomEnd,
-
                     ) {
-                    Text(text = "Сумма калорий = 1000" )
+                    var totalCalories = viewModel.getCalories(listFood)
+                    Text(text = "Сумма калорий =  $totalCalories" )
                 }
             }
           }

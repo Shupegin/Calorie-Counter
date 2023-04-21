@@ -1,18 +1,17 @@
 package com.example.caloriecounter
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import com.example.caloriecounter.dialog.FoodModel
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.caloriecounter.navigation.AppNavGraph
+import com.example.caloriecounter.navigation.NavigationItem
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
@@ -20,10 +19,11 @@ fun MainScreen(
     owner: LifecycleOwner,
 
 ){
-    val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
+    val navHostController = rememberNavController()
     Scaffold(bottomBar ={
         BottomNavigation {
-
+            val navBackStackEntry  by navHostController.currentBackStackEntryAsState()
+            val currentRout = navBackStackEntry?.destination?.route
             val item = listOf(
                 NavigationItem.Home,
                 NavigationItem.Favourite,
@@ -31,8 +31,8 @@ fun MainScreen(
             )
             item.forEach{ item ->
                 BottomNavigationItem(
-                    selected = selectedNavItem == item,
-                    onClick = {viewModel.selectNavItem(item)},
+                    selected = currentRout == item.screen.route,
+                    onClick = {navHostController.navigate(item.screen.route)},
                     icon = {
                         Icon(item.icon, contentDescription = null )
                     },
@@ -43,21 +43,15 @@ fun MainScreen(
                     unselectedContentColor = MaterialTheme.colors.onSecondary
 
                     )
-
             }
         }
     },) {paddingValues ->
-        when(selectedNavItem){
-            NavigationItem.Home ->{
-                HomeScreen(
-                    viewModel = viewModel,
-                    paddingValues = paddingValues,
-                    onItem = onItem,
-                    owner = owner
-                )
-            }
-            NavigationItem.Favourite -> Text(text = "Favourite", color = Color.Black)
-            NavigationItem.Profile -> Text(text = "Profile", color = Color.Black)
-        }
+        AppNavGraph(
+            navHostController = navHostController ,
+            homeScreenContent = { HomeScreen(viewModel = viewModel, paddingValues = paddingValues, onItem = onItem)},
+            historyScreenContent = {Text(text = "Favourite", color = Color.Black)},
+            profileScreenContent = {Text(text = "Profile", color = Color.Black)}
+        )
+
     }
 }

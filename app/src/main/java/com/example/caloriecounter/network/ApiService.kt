@@ -6,13 +6,6 @@ import retrofit2.http.*
 
 
 interface ApiService {
-//    @GET("server.api")
-//    suspend fun loadInfoFoods(@Query("method") method: String = "food.get.v2",
-//                              @Query("format") format: String = "json",
-//                              @Query("food_id") food_id: Int
-//    ) : JsonPojoFood
-
-
     @GET("server.api")
     suspend fun loadSearchFoods(
         @Query("method") method: String = "foods.search.v2",
