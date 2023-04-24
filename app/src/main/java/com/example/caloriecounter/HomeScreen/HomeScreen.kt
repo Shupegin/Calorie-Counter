@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.caloriecounter.dialog.FoodModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -68,7 +69,9 @@ fun HomeScreen(
                     .padding(4.dp),
                     contentAlignment = Alignment.BottomEnd,
                     ) {
+                    Log.d("HomeScreen","home $listFood")
                     var totalCalories = viewModel.getCalories(listFood)
+
                     Text(text = "Сумма калорий =  $totalCalories" )
                 }
             }

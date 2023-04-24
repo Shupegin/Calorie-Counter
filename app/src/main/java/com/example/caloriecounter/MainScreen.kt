@@ -8,8 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.caloriecounter.navigation.AppNavGraph
-import com.example.caloriecounter.navigation.NavigationItem
+import com.example.caloriecounter.navigation.*
 
 
 @Composable
@@ -19,10 +18,10 @@ fun MainScreen(
     owner: LifecycleOwner,
 
 ){
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
     Scaffold(bottomBar ={
         BottomNavigation {
-            val navBackStackEntry  by navHostController.currentBackStackEntryAsState()
+            val navBackStackEntry  by navigationState.navHostController.currentBackStackEntryAsState()
             val currentRout = navBackStackEntry?.destination?.route
             val item = listOf(
                 NavigationItem.Home,
@@ -32,7 +31,7 @@ fun MainScreen(
             item.forEach{ item ->
                 BottomNavigationItem(
                     selected = currentRout == item.screen.route,
-                    onClick = {navHostController.navigate(item.screen.route)},
+                    onClick = { navigationState.navigateTo(item.screen.route)  },
                     icon = {
                         Icon(item.icon, contentDescription = null )
                     },
@@ -47,7 +46,7 @@ fun MainScreen(
         }
     },) {paddingValues ->
         AppNavGraph(
-            navHostController = navHostController ,
+            navHostController = navigationState.navHostController ,
             homeScreenContent = { HomeScreen(viewModel = viewModel, paddingValues = paddingValues, onItem = onItem)},
             historyScreenContent = {Text(text = "Favourite", color = Color.Black)},
             profileScreenContent = {Text(text = "Profile", color = Color.Black)}

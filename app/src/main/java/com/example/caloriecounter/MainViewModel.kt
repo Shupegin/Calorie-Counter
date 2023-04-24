@@ -28,11 +28,11 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     var token : String? = ""
 
 
-    private val _addInfoFood = MutableLiveData<MutableList<FoodModel>>()
-    val addInfoFood : MutableLiveData<MutableList<FoodModel>> = _addInfoFood//_addInfoFood
-
-    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
-    val selectedNavItem: LiveData<NavigationItem> = _selectedNavItem
+//    private val _addInfoFood = MutableLiveData<MutableList<FoodModel>>()
+//    val addInfoFood : MutableLiveData<MutableList<FoodModel>> = _addInfoFood//_addInfoFood
+//
+//    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
+//    val selectedNavItem: LiveData<NavigationItem> = _selectedNavItem
 
 
     private val db = AppDatabase.getInstance(application)
@@ -102,16 +102,16 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
 
-    fun selectNavItem(item: NavigationItem) {
-        _selectedNavItem.value = item
-    }
+//    fun selectNavItem(item: NavigationItem) {
+//        _selectedNavItem.value = item
+//    }
 
  fun addInfoFoodBtn(foodModel : FoodModel) {
      loadSearchFood(foodModel)
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun getCurrentDate(): String {
+     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd.MM.yyy")
         return dateFormat.format(Date())
     }
