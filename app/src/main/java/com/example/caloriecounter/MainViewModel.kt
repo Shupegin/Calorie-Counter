@@ -111,7 +111,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
     @SuppressLint("SimpleDateFormat")
-     private fun getCurrentDate(): String {
+     fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd.MM.yyy")
         return dateFormat.format(Date())
     }

@@ -20,7 +20,7 @@ fun dialog(dialogState: MutableState<Boolean>,
             onDismissRequest = {
                 dialogState.value = false
             },
-            title = { Text(text = "Дата: ") },
+            title = { Text(text = "Дата: ${viewModel.getCurrentDate()} ") },
 
             text = {
                 OutlinedTextField(
