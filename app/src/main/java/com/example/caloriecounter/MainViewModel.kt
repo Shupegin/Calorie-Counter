@@ -27,23 +27,13 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     var food_id : Int? = 321312
     var token : String? = ""
 
-
-//    private val _addInfoFood = MutableLiveData<MutableList<FoodModel>>()
-//    val addInfoFood : MutableLiveData<MutableList<FoodModel>> = _addInfoFood//_addInfoFood
-//
-//    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
-//    val selectedNavItem: LiveData<NavigationItem> = _selectedNavItem
-
-
     private val db = AppDatabase.getInstance(application)
     val foodListDAO = db.foodsInfoDao().getFoodsList()
 
     init {
         authorizationRequest()
         getCurrentDate()
-
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     fun authorizationRequest() {
@@ -84,14 +74,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
 
-     fun getCalories(listFood : List<FoodModel>) : Int{
-        var calories = 0
-        for (item in listFood){
-            if (item.dataCurrent == getCurrentDate()){
-                calories += item.calories!!
-            }
-        }
-        return calories
+   fun getCalories(listFood : List<FoodModel>) : Int{
+       return listFood.sumOf { it.calories ?: 0 }
     }
 
     fun textFilter(text: String) : Int{
@@ -100,11 +84,6 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         val filterText = filteredText.filter { it.isDigit() }
         return filterText.toInt()
     }
-
-
-//    fun selectNavItem(item: NavigationItem) {
-//        _selectedNavItem.value = item
-//    }
 
  fun addInfoFoodBtn(foodModel : FoodModel) {
      loadSearchFood(foodModel)

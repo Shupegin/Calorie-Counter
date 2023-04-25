@@ -1,15 +1,11 @@
 package com.example.caloriecounter
 
 import android.annotation.SuppressLint
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.lazy.LazyColumn
-
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -19,13 +15,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.caloriecounter.dialog.FoodModel
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -41,7 +34,6 @@ fun HomeScreen(
         .background(color = Color.Gray)
     ){
         val foodList = viewModel.foodListDAO.observeAsState(listOf())
-
         val list = foodList.value.groupBy { it.dataCurrent }
 
       LazyColumn(modifier = Modifier
@@ -69,10 +61,8 @@ fun HomeScreen(
                     .padding(4.dp),
                     contentAlignment = Alignment.BottomEnd,
                     ) {
-                    Log.d("HomeScreen","home $listFood")
-                    var totalCalories = viewModel.getCalories(listFood)
-
-                    Text(text = "Сумма калорий =  $totalCalories" )
+                    val totalCalories = viewModel.getCalories(listFood)
+                    Text(text = "Сумма калорий = $totalCalories " )
                 }
             }
           }

@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.example.caloriecounter.HistoryScreen.HistoryScreen
 import com.example.caloriecounter.navigation.*
 
 
@@ -48,7 +48,7 @@ fun MainScreen(
         AppNavGraph(
             navHostController = navigationState.navHostController ,
             homeScreenContent = { HomeScreen(viewModel = viewModel, paddingValues = paddingValues, onItem = onItem)},
-            historyScreenContent = {Text(text = "Favourite", color = Color.Black)},
+            historyScreenContent = { HistoryScreen(viewModel = viewModel, paddingValues = paddingValues)},
             profileScreenContent = {Text(text = "Profile", color = Color.Black)}
         )
 
