@@ -62,7 +62,7 @@ fun HomeScreen(
                     contentAlignment = Alignment.BottomEnd,
                     ) {
                     val totalCalories = viewModel.getCalories(listFood)
-                    Text(text = "Сумма калорий = $totalCalories " )
+                    Text(text = "Сумма калорий = $totalCalories ", modifier = Modifier.background(color = Color.Cyan) )
                 }
             }
           }

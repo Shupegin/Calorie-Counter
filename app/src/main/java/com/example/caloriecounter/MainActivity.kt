@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+
         setContent {
             CalorieCounterTheme {
                 val dialogState = remember {
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     dialog(dialogState, viewModel, lifecycleScope = lifecycleScope)
                 }
 
-                MainScreen(viewModel = viewModel, onItem = { dialogState.value = true}, this)
+                MainScreen(mainViewModel = viewModel, onItem = { dialogState.value = true}, owner = this)
 
             }
         }

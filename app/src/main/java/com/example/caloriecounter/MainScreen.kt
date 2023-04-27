@@ -8,12 +8,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.caloriecounter.HistoryScreen.HistoryScreen
+import com.example.caloriecounter.HistoryScreen.HistoryViewModel
 import com.example.caloriecounter.navigation.*
 
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel,
+    mainViewModel: MainViewModel,
     onItem: () -> Unit,
     owner: LifecycleOwner,
 
@@ -47,8 +48,8 @@ fun MainScreen(
     },) {paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController ,
-            homeScreenContent = { HomeScreen(viewModel = viewModel, paddingValues = paddingValues, onItem = onItem)},
-            historyScreenContent = { HistoryScreen(viewModel = viewModel, paddingValues = paddingValues)},
+            homeScreenContent = { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = onItem)},
+            historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues)},
             profileScreenContent = {Text(text = "Profile", color = Color.Black)}
         )
 
