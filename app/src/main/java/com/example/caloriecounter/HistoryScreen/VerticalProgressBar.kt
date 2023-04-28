@@ -1,5 +1,7 @@
 package com.example.caloriecounter.HistoryScreen
 
+import android.util.Log
+import android.widget.VideoView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -10,32 +12,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import com.example.caloriecounter.MainViewModel
 import com.example.caloriecounter.ui.theme.Gray500
 
 
 @Composable
-fun VerticalProgressBar() {
-    var progressCount: Int by remember { mutableStateOf(0) }
+fun VerticalProgressBar(viewModel: MainViewModel,
+                        owner: LifecycleOwner
+) {
     var progress by remember { mutableStateOf(0f) }
+    var numberOfCalories  = viewModel.addHistoryCalories.observeAsState()
 
-    when (progressCount) {
-        0 -> progress = 0.0f
-        1 -> progress = 0.1f
-        2 -> progress = 0.2f
-        3 -> progress = 0.3f
-        4 -> progress = 0.4f
-        5 -> progress = 0.5f
-        6 -> progress = 0.6f
-        7 -> progress = 0.7f
-        8 -> progress = 0.8f
-        9 -> progress = 0.9f
-        10 -> progress = 1.0f
+
+    if(numberOfCalories.value != null) {
+        val caloriesPerDay = 2000
+        val sum =  numberOfCalories.value!!.toFloat() / caloriesPerDay
+        val sumY = sum * 150
+        Log.d("History"," $sumY")
+        progress = sum
+
     }
 
     val size by animateFloatAsState(
@@ -74,32 +79,18 @@ fun VerticalProgressBar() {
                     .width(60.dp)
                     .fillMaxHeight(size)
                     .clip(RoundedCornerShape(9.dp))
-                    .background( Brush.verticalGradient(
-                        listOf(
-                            Color(0xffE000FF),
-                            Color(0xffE000FF),
-                            Color(0xFF7700FF),
-                            Color(0xFF7700FF),
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color(0xffE000FF),
+                                Color(0xffE000FF),
+                                Color(0xFF7700FF),
+                                Color(0xFF7700FF),
+                            )
                         )
-                    ))
+                    )
                     .animateContentSize()
             )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 30.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            // increase Button
-            Button(onClick = {
-                if (progressCount < 10) {
-                    progressCount += 2
-                }
-            }) {
-                Text(text = "Обновить")
-            }
         }
     }
 }

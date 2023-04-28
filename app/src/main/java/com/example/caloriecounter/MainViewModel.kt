@@ -6,19 +6,18 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.caloriecounter.database.AppDatabase
 
 import com.example.caloriecounter.dialog.FoodMapper
 import com.example.caloriecounter.dialog.FoodModel
-import com.example.caloriecounter.navigation.NavigationItem
 import com.example.caloriecounter.network.ApiFactory
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 
@@ -29,6 +28,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     private val db = AppDatabase.getInstance(application)
     val foodListDAO = db.foodsInfoDao().getFoodsList()
+    private val _historyCalories : MutableLiveData<Int> = MutableLiveData()
+    val addHistoryCalories : MutableLiveData<Int> = _historyCalories
 
     init {
         authorizationRequest()
@@ -65,7 +66,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
                 }
             }
 //            calories /= foodModelList.size
-            foodModel.calories = 200
+            foodModel.calories = 100
             foodModel.dataCurrent = getCurrentDate()
             val listFood = ArrayList<FoodModel>()
             listFood.add(foodModel)
@@ -76,6 +77,30 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
    fun getCalories(listFood : List<FoodModel>) : Int{
        return listFood.sumOf { it.calories ?: 0 }
+    }
+
+    fun sendSelectedOptionText(selectedOptionText : String,listFood: List<FoodModel>){
+        when(selectedOptionText){
+            "День" -> getCaloriesOneDay(listFood)
+            "Неделя" -> getCaloriesWeek()
+            "Две недели" -> Log.d("History","3")
+            "Месяц"  -> Log.d("History","4")
+
+        }
+    }
+
+    fun getCaloriesOneDay(listFood : List<FoodModel>){
+        var calories = 0
+        for(item in listFood){
+            if (item.dataCurrent == getCurrentDate()){
+                calories += item.calories ?: 0
+            }
+        }
+        _historyCalories.value = calories
+    }
+
+    fun getCaloriesWeek(){
+        _historyCalories.value = 0
     }
 
     fun textFilter(text: String) : Int{

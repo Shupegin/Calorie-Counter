@@ -49,7 +49,7 @@ fun MainScreen(
         AppNavGraph(
             navHostController = navigationState.navHostController ,
             homeScreenContent = { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = onItem)},
-            historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues)},
+            historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
             profileScreenContent = {Text(text = "Profile", color = Color.Black)}
         )
 

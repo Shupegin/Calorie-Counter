@@ -1,14 +1,18 @@
 package com.example.caloriecounter.HistoryScreen
 
+import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import com.example.caloriecounter.MainViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DropMenu(){
+fun DropMenu(viewModel: MainViewModel){
     val options = listOf("День", "Неделя", "Две недели","Месяц")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
+    val foodList = viewModel.foodListDAO.observeAsState(listOf())
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -38,6 +42,7 @@ fun DropMenu(){
                 DropdownMenuItem(
                     onClick = {
                         selectedOptionText = selectionOption
+                        viewModel.sendSelectedOptionText(selectedOptionText, listFood = foodList.value)
                         expanded = false
                     }
                 ){
