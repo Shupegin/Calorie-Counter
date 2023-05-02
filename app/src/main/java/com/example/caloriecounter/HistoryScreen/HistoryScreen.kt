@@ -1,14 +1,11 @@
 package com.example.caloriecounter.HistoryScreen
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.example.caloriecounter.MainViewModel
 
 

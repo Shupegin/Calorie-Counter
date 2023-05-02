@@ -33,16 +33,12 @@ fun VerticalProgressBar(viewModel: MainViewModel,
     var progress by remember { mutableStateOf(0f) }
     var numberOfCalories  = viewModel.addHistoryCalories.observeAsState()
 
-
     if(numberOfCalories.value != null) {
         val caloriesPerDay = 2000
-        val sum =  numberOfCalories.value!!.toFloat() / caloriesPerDay
-        val sumY = sum * 150
-        Log.d("History"," $sumY")
-        progress = sum
+        val calories =  numberOfCalories.value!!.toFloat() / caloriesPerDay
 
+        progress = calories
     }
-
     val size by animateFloatAsState(
         targetValue = progress,
         tween(

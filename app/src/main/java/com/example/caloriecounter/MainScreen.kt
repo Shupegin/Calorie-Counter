@@ -8,7 +8,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.caloriecounter.HistoryScreen.HistoryScreen
-import com.example.caloriecounter.HistoryScreen.HistoryViewModel
 import com.example.caloriecounter.navigation.*
 
 
@@ -17,7 +16,6 @@ fun MainScreen(
     mainViewModel: MainViewModel,
     onItem: () -> Unit,
     owner: LifecycleOwner,
-
 ){
     val navigationState = rememberNavigationState()
     Scaffold(bottomBar ={
@@ -32,7 +30,8 @@ fun MainScreen(
             item.forEach{ item ->
                 BottomNavigationItem(
                     selected = currentRout == item.screen.route,
-                    onClick = { navigationState.navigateTo(item.screen.route)  },
+                    onClick = { navigationState.navigateTo(item.screen.route)
+                              },
                     icon = {
                         Icon(item.icon, contentDescription = null )
                     },
@@ -41,17 +40,15 @@ fun MainScreen(
                     },
                     selectedContentColor =  MaterialTheme.colors.onPrimary,
                     unselectedContentColor = MaterialTheme.colors.onSecondary
-
-                    )
+                )
             }
         }
-    },) {paddingValues ->
+    },){ paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController ,
             homeScreenContent = { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = onItem)},
             historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
             profileScreenContent = {Text(text = "Profile", color = Color.Black)}
         )
-
     }
 }

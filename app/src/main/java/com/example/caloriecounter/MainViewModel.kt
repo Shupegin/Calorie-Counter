@@ -66,7 +66,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
                 }
             }
 //            calories /= foodModelList.size
-            foodModel.calories = 100
+            foodModel.calories = 200
             foodModel.dataCurrent = getCurrentDate()
             val listFood = ArrayList<FoodModel>()
             listFood.add(foodModel)

@@ -4,15 +4,17 @@ import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.caloriecounter.MainViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DropMenu(viewModel: MainViewModel){
     val options = listOf("День", "Неделя", "Две недели","Месяц")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    var selectedOptionText by rememberSaveable { mutableStateOf(options[0]) }
     val foodList = viewModel.foodListDAO.observeAsState(listOf())
+    viewModel.sendSelectedOptionText(selectedOptionText, listFood = foodList.value)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
