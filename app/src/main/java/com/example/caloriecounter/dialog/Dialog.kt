@@ -2,18 +2,13 @@ package com.example.caloriecounter.dialog
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.caloriecounter.MainViewModel
-import com.example.caloriecounter.ui.theme.Black500
-import java.time.format.TextStyle
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -61,7 +56,6 @@ fun dialog(dialogState: MutableState<Boolean>,
             confirmButton = {
                 Button(onClick = {
                     val foodModel = FoodModel(food = userfood)
-
                     viewModel.addInfoFoodBtn(foodModel)
                     dialogState.value = false},
 
@@ -70,42 +64,4 @@ fun dialog(dialogState: MutableState<Boolean>,
                 }
             }
         )
-
-
-//        AlertDialog(
-//            onDismissRequest = {
-//            },
-//            title = {
-//                Text(text = "Title")
-//            },
-//            text = {
-//                Column() {
-//                    OutlinedTextField(
-//                        title = {},
-//                        value = " ",
-//                        onValueChange = {},
-//
-//
-//                    )
-//                    Text("Custom Text")
-//                    Checkbox(checked = false, onCheckedChange = {})
-//                }
-//            },
-//            buttons = {
-//                Row(
-//                    modifier = Modifier.padding(all = 8.dp),
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    Button(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        onClick = { }
-//                    ) {
-//                        Text("Dismiss")
-//                    }
-//                }
-//            }
-//        )
-
-
-
 }

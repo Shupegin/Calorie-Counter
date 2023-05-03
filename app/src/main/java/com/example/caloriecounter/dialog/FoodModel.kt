@@ -12,5 +12,6 @@ data class FoodModel(
     var food: String? = null,
     var desctription: String? = null,
     var calories: Int? = null,
-    var error: Int? = null
+    var error: Int? = null,
+    var eating : String? = null
 )

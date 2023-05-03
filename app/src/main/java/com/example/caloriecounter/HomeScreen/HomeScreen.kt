@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.caloriecounter.ui.theme.Green700
+import com.example.caloriecounter.ui.theme.Сoral
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -32,7 +34,7 @@ fun HomeScreen(
 
 
     Box(Modifier
-        .background(color = Color.Gray)
+        .background(color = Green700)
     ){
         val foodList = viewModel.foodListDAO.observeAsState(listOf())
         val list = foodList.value.groupBy { it.dataCurrent }
@@ -41,24 +43,21 @@ fun HomeScreen(
           .fillMaxWidth()
           .padding(bottom = 55.dp)){
 
-          var count = 0
+
           list?.forEach{(dataCurrent,listFood)->
 
               stickyHeader{
                   Box(modifier = Modifier
                       .fillMaxWidth()
                       .padding(1.dp)
-                      .background(Color.White),
+                      .background(color = Сoral),
                       contentAlignment = Alignment.Center
                   ){
                       Text(text = dataCurrent.toString(), style = MaterialTheme.typography.h6)
                   }
               }
               items(listFood){foodModel ->
-                  count ++
-                  Log.d("HomeScreen","count = $count")
-                  cardFood(foodModel = foodModel, count = count)
-
+                  cardFood(foodModel = foodModel)
               }
             item() {
                 Box(modifier = Modifier
@@ -78,7 +77,7 @@ fun HomeScreen(
             .padding(bottom = 70.dp),
             contentAlignment = Alignment.BottomCenter
 
-        ){
+         ){
             FloatingActionButton(onClick = {
                 onItem.invoke()
             }) {

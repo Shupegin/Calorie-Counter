@@ -1,7 +1,6 @@
 package com.example.caloriecounter.HistoryScreen
 
-import android.util.Log
-import android.widget.VideoView
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -9,7 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
+
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,8 +19,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import com.example.caloriecounter.MainViewModel
 import com.example.caloriecounter.ui.theme.Gray500
 
@@ -32,6 +29,7 @@ fun VerticalProgressBar(viewModel: MainViewModel,
 ) {
     var progress by remember { mutableStateOf(0f) }
     var numberOfCalories  = viewModel.addHistoryCalories.observeAsState()
+    var day = viewModel.addDay.observeAsState()
 
     if(numberOfCalories.value != null) {
         val caloriesPerDay = 2000
@@ -55,6 +53,9 @@ fun VerticalProgressBar(viewModel: MainViewModel,
         verticalArrangement = Arrangement.Center
 
     ) {
+        Box(){
+            Text(text = "${day.value}")
+        }
         Box(
             modifier = Modifier
                 .height(150.dp)

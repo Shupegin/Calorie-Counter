@@ -31,6 +31,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private val _historyCalories : MutableLiveData<Int> = MutableLiveData()
     val addHistoryCalories : MutableLiveData<Int> = _historyCalories
 
+    private val _day : MutableLiveData<String> = MutableLiveData()
+    val addDay : MutableLiveData<String> = _day
+
     init {
         authorizationRequest()
         getCurrentDate()
@@ -87,6 +90,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             "Месяц"  -> Log.d("History","4")
 
         }
+        _day.value = selectedOptionText
     }
 
     fun getCaloriesOneDay(listFood : List<FoodModel>){
