@@ -12,7 +12,7 @@ import com.example.caloriecounter.dialog.FoodModel
 
 
 @Composable
-fun cardFood(foodModel: FoodModel){
+fun cardFood(foodModel: FoodModel, count : Int){
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
@@ -23,7 +23,7 @@ fun cardFood(foodModel: FoodModel){
                     .fillMaxWidth()
                     .padding(4.dp)
                 ){
-                    Text("прием  1 :")
+                    Text("прием  $count :")
                     Text(text = " ${foodModel.food}", modifier = Modifier.padding(start = 10.dp))
                     Text(text = "Калории = ${foodModel.calories}", modifier = Modifier.padding(start = 10.dp))
                 }

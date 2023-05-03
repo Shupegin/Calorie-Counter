@@ -1,6 +1,7 @@
 package com.example.caloriecounter
 
 import android.annotation.SuppressLint
+import android.util.Log
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -40,7 +41,9 @@ fun HomeScreen(
           .fillMaxWidth()
           .padding(bottom = 55.dp)){
 
+          var count = 0
           list?.forEach{(dataCurrent,listFood)->
+
               stickyHeader{
                   Box(modifier = Modifier
                       .fillMaxWidth()
@@ -52,7 +55,9 @@ fun HomeScreen(
                   }
               }
               items(listFood){foodModel ->
-                  cardFood(foodModel = foodModel)
+                  count ++
+                  Log.d("HomeScreen","count = $count")
+                  cardFood(foodModel = foodModel, count = count)
 
               }
             item() {

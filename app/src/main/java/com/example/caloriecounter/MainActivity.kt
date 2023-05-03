@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 MainScreen(mainViewModel = viewModel, onItem = { dialogState.value = true}, owner = this)
-
             }
         }
     }
