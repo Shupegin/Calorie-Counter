@@ -41,7 +41,8 @@ fun HomeScreen(
 
       LazyColumn(modifier = Modifier
           .fillMaxWidth()
-          .padding(bottom = 55.dp)){
+          .padding(bottom = 55.dp),
+      ){
 
 
           list?.forEach{(dataCurrent,listFood)->

@@ -16,8 +16,7 @@ fun cardFood(foodModel: FoodModel, ){
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
+            shape = RoundedCornerShape(12.dp)) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
