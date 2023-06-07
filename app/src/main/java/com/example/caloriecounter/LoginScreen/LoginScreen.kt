@@ -16,18 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+
 import androidx.navigation.NavController
+
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: LifecycleOwner){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val error = viewModel.error.observeAsState("")
-    val user = viewModel.user.observeAsState("")
-
-        Log.d("TOASTER", "error = ${error.value}" )
-        Log.d("TOASTER", "user = ${user.value}" )
+    viewModel.user.observe(owner, androidx.lifecycle.Observer {
+        navController.navigate("activity_main") {
+                popUpTo(0)
+        }
+    })
 
 
     Box(modifier = Modifier
@@ -70,12 +74,10 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                 )
             )
             Button(onClick = {
-
                 viewModel.login(email = email, password =  password)
 
             }) {
                 Text(text = "Войти")
-
             }
 
             Row {

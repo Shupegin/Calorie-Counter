@@ -106,7 +106,7 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
                 )
             )
             Button(onClick = {
-                viewModel.singUp(email = email, password = password)
+                viewModel.singUp(email = email, password = password, calories = calories.toInt())
             }) {
                 Text(text = "Регистрация")
             }

@@ -8,15 +8,23 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.caloriecounter.HistoryScreen.HistoryScreen
 import com.example.caloriecounter.ProfileScreen.ProfileScreen
+import com.example.caloriecounter.dialog.dialog
 import com.example.caloriecounter.navigation.*
 
 
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel,
-    onItem: () -> Unit,
     owner: LifecycleOwner,
 ){
+    val dialogState = remember {
+        mutableStateOf(false)
+    }
+    if (dialogState.value){
+        dialog(dialogState, mainViewModel)
+    }
+
+
     val navigationState = rememberNavigationState()
     Scaffold(bottomBar ={
         BottomNavigation {
@@ -46,7 +54,7 @@ fun MainScreen(
     },){ paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent =    { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = onItem)},
+            homeScreenContent =    { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = {dialogState.value = true})},
             historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
             profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)})
     }

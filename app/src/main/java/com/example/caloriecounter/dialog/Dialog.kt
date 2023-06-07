@@ -14,8 +14,6 @@ import com.example.caloriecounter.MainViewModel
 @Composable
 fun dialog(dialogState: MutableState<Boolean>,
            viewModel: MainViewModel,
-           lifecycleScope: LifecycleCoroutineScope,
-
 ){
     var userfood by remember { mutableStateOf("") }
         AlertDialog(
