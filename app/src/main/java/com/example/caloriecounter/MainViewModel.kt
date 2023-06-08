@@ -8,11 +8,16 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.caloriecounter.RegistrationScreen.User
 import com.example.caloriecounter.database.AppDatabase
 
 import com.example.caloriecounter.dialog.FoodMapper
 import com.example.caloriecounter.dialog.FoodModel
 import com.example.caloriecounter.network.ApiFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,9 +39,17 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private val _day : MutableLiveData<String> = MutableLiveData()
     val addDay : MutableLiveData<String> = _day
 
+    private var firebaseDatabase : FirebaseDatabase? = null
+    private var userReference : DatabaseReference? = null
+    private var auth:  FirebaseAuth? = null
+
+
     init {
         authorizationRequest()
         getCurrentDate()
+        auth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        userReference = firebaseDatabase?.getReference("calories")
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -74,6 +87,15 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             val listFood = ArrayList<FoodModel>()
             listFood.add(foodModel)
             db.foodsInfoDao().insertFoodList(listFood)
+
+
+
+
+            auth?.addAuthStateListener{
+                val user = User(it.uid.toString(),"Дима",233)
+
+                user?.id?.let { it1 -> userReference?.child(it1)?.setValue(user) }
+            }
         }
     }
 
