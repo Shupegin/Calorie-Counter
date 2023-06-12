@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.caloriecounter.LoginScreen.LoginScreen
 import com.example.caloriecounter.LoginScreen.LoginViewModel
+import com.example.caloriecounter.ProfileScreen.ProfileViewModel
 import com.example.caloriecounter.RegistrationScreen.RegistrationScreen
 import com.example.caloriecounter.RegistrationScreen.RegistrationViewModel
 import com.example.caloriecounter.ui.theme.CalorieCounterTheme

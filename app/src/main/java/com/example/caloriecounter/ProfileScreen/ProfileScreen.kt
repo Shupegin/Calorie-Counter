@@ -3,25 +3,20 @@ package com.example.caloriecounter.ProfileScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.magnifier
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import coil.compose.rememberImagePainter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.example.caloriecounter.MainViewModel
 import com.example.caloriecounter.R
 import com.example.caloriecounter.ui.theme.Black900
-import com.example.caloriecounter.ui.theme.Gray500
 import com.example.caloriecounter.ui.theme.Green100
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -30,6 +25,10 @@ fun ProfileScreen(viewModel: MainViewModel,
                   paddingValues: PaddingValues,
                   owner: LifecycleOwner
 ){
+    var clientID = ""
+     viewModel.client.observe(owner, Observer {
+         clientID = it
+     })
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Green100),
@@ -42,6 +41,7 @@ fun ProfileScreen(viewModel: MainViewModel,
             Text(text = "Отправить ссылку:", color = Black900, fontSize = 20.sp )
             Text(text = "https://shupegn-corp.ru:", color = Black900, fontSize = 20.sp )
             Text(text = "Для синхронизации счетчиков", color = Black900, fontSize = 20.sp )
+            Text(text = "Ваш ID - $clientID ", color = Black900, fontSize = 20.sp )
             CoilImage()
 
 

@@ -1,11 +1,13 @@
 package com.example.caloriecounter.RegistrationScreen
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.util.prefs.Preferences
 
 class RegistrationViewModel : ViewModel() {
     private var auth:  FirebaseAuth? = null
@@ -31,6 +33,7 @@ class RegistrationViewModel : ViewModel() {
     fun singUp(email: String, password: String, calories: Int){
         auth?.createUserWithEmailAndPassword(email,password)?.addOnSuccessListener {
             val fireBaseUser : FirebaseUser? = it.user
+
             val user = fireBaseUser?.let { it1 -> User(it1.uid,"Дима",calories) }
 
             user?.id?.let { it1 -> userReference?.child(it1)?.setValue(user) }

@@ -44,12 +44,19 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private var auth:  FirebaseAuth? = null
 
 
+    private val _clientID : MutableLiveData<String> = MutableLiveData()
+    val client : MutableLiveData<String> =  _clientID
+
+
     init {
         authorizationRequest()
         getCurrentDate()
         auth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         userReference = firebaseDatabase?.getReference("calories")
+        auth?.addAuthStateListener{
+            _clientID.value = it.uid
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -88,13 +95,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             listFood.add(foodModel)
             db.foodsInfoDao().insertFoodList(listFood)
 
-
-
-
             auth?.addAuthStateListener{
-                val user = User(it.uid.toString(),"Дима",233)
-
-                user?.id?.let { it1 -> userReference?.child(it1)?.setValue(user) }
+                it.uid?.let { it1 -> userReference?.child(it1)?.push()?.setValue(foodModel) }
             }
         }
     }
