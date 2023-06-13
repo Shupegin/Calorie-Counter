@@ -1,5 +1,6 @@
 package com.example.caloriecounter.ProfileScreen
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,7 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
@@ -15,11 +16,10 @@ import androidx.lifecycle.Observer
 import coil.compose.rememberImagePainter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.caloriecounter.MainViewModel
-import com.example.caloriecounter.R
 import com.example.caloriecounter.ui.theme.Black900
 import com.example.caloriecounter.ui.theme.Green100
 
-@OptIn(ExperimentalGlideComposeApi::class)
+
 @Composable
 fun ProfileScreen(viewModel: MainViewModel,
                   paddingValues: PaddingValues,
@@ -28,7 +28,14 @@ fun ProfileScreen(viewModel: MainViewModel,
     var clientID = ""
      viewModel.client.observe(owner, Observer {
          clientID = it
+         viewModel.generateQR(it)
      })
+    var imageQR  =  Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888)
+
+
+    viewModel.imageQR.observe(owner, Observer {
+        imageQR = it
+    })
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Green100),
@@ -42,14 +49,14 @@ fun ProfileScreen(viewModel: MainViewModel,
             Text(text = "https://shupegn-corp.ru:", color = Black900, fontSize = 20.sp )
             Text(text = "Для синхронизации счетчиков", color = Black900, fontSize = 20.sp )
             Text(text = "Ваш ID - $clientID ", color = Black900, fontSize = 20.sp )
-            CoilImage()
+            CoilImage(image = imageQR)
 
 
         }
     }
 }
 @Composable
-fun CoilImage(){
+fun CoilImage(image :Bitmap){
     Box(modifier = Modifier
         .height(300.dp)
         .width(300.dp),
@@ -60,6 +67,9 @@ fun CoilImage(){
 
             }
         )
-        Image(painterResource(id = R.drawable.qr), contentDescription = "QR-code")
+        Image(
+            bitmap = image.asImageBitmap(),
+            contentDescription = "some useful description",
+        )
     }
 }

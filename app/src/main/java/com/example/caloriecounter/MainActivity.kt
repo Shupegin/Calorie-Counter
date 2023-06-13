@@ -1,6 +1,7 @@
 package com.example.caloriecounter
 
 
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -2,6 +2,7 @@ package com.example.caloriecounter
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -18,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,6 +50,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     private val _clientID : MutableLiveData<String> = MutableLiveData()
     val client : MutableLiveData<String> =  _clientID
+
+    private val _imageQR : MutableLiveData<Bitmap> = MutableLiveData()
+    val imageQR : MutableLiveData<Bitmap> = _imageQR
 
 
     init {
@@ -146,5 +153,14 @@ class MainViewModel(application: Application): AndroidViewModel(application){
      fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd.MM.yyy")
         return dateFormat.format(Date())
+    }
+
+    fun generateQR(ui : String){
+        try {
+            val barcodeEncode = BarcodeEncoder()
+            val bitmap : Bitmap = barcodeEncode.encodeBitmap(ui, BarcodeFormat.QR_CODE, 750, 750)
+                _imageQR.value = bitmap
+        } catch (e: WriterException){}
+
     }
 }
