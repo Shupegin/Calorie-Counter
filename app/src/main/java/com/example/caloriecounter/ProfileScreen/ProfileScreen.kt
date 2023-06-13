@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import coil.compose.rememberImagePainter
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.caloriecounter.MainViewModel
 import com.example.caloriecounter.ui.theme.Black900
 import com.example.caloriecounter.ui.theme.Green100
