@@ -24,6 +24,7 @@ android {
         }
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
@@ -48,6 +49,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
 }
 
 dependencies {
@@ -63,6 +65,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
 
     implementation 'com.google.firebase:firebase-database:20.2.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -102,5 +107,5 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-
+    implementation 'com.google.zxing:core:3.4.1'
 }

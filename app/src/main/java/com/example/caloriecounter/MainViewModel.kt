@@ -51,6 +51,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private val _clientID : MutableLiveData<String> = MutableLiveData()
     val client : MutableLiveData<String> =  _clientID
 
+    private val _userId : MutableLiveData<String> = MutableLiveData()
+    val userId : MutableLiveData<String> =  _userId
+
     private val _imageQR : MutableLiveData<Bitmap> = MutableLiveData()
     val imageQR : MutableLiveData<Bitmap> = _imageQR
 
@@ -162,5 +165,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
                 _imageQR.value = bitmap
         } catch (e: WriterException){}
 
+    }
+    fun userId(userId : String){
+        _userId.value = userId
+        Log.d("userTEST","$userId")
     }
 }

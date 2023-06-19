@@ -1,6 +1,7 @@
 package com.example.caloriecounter
 
 
+import android.content.Context
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
@@ -16,6 +17,7 @@ import com.example.caloriecounter.navigation.*
 fun MainScreen(
     mainViewModel: MainViewModel,
     owner: LifecycleOwner,
+    context: Context
 ){
     val dialogState = remember {
         mutableStateOf(false)
@@ -56,6 +58,6 @@ fun MainScreen(
             navHostController = navigationState.navHostController,
             homeScreenContent =    { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = {dialogState.value = true})},
             historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
-            profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)})
+            profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner,context)})
     }
 }
