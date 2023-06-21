@@ -9,16 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.caloriecounter.RegistrationScreen.User
 import com.example.caloriecounter.database.AppDatabase
 
 import com.example.caloriecounter.dialog.FoodMapper
 import com.example.caloriecounter.dialog.FoodModel
 import com.example.caloriecounter.network.ApiFactory
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -47,7 +44,6 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private var userReference : DatabaseReference? = null
     private var auth:  FirebaseAuth? = null
 
-
     private val _clientID : MutableLiveData<String> = MutableLiveData()
     val client : MutableLiveData<String> =  _clientID
 
@@ -67,6 +63,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         auth?.addAuthStateListener{
             _clientID.value = it.uid
         }
+        loadFirebaseData()
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -168,6 +165,19 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
     fun userId(userId : String){
         _userId.value = userId
-        Log.d("userTEST","$userId")
+    }
+
+    fun loadFirebaseData(){
+        userReference?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(dataSnapshot in snapshot.children){
+                    var value = dataSnapshot.value
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
     }
 }
+
+
