@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
         if(intentResult != null){
             var content = intentResult.contents
             if (content != null){
-                mainViewModel.userId(intentResult.contents.toString())
+                mainViewModel.databaseEntryUser(intentResult.contents.toString())
             }
         }else{
             super.onActivityResult(requestCode, resultCode, data)

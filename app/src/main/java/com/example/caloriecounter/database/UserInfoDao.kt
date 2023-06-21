@@ -5,16 +5,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.caloriecounter.pojo.FoodModel
+import com.example.caloriecounter.pojo.UserIDModel
+
 
 @Dao
-interface FoodsInfoDao {
-    @Query("SELECT * FROM food_name_list")
-    fun getFoodsList() : LiveData<List<FoodModel>>
+interface UserInfoDao {
+    @Query("SELECT * FROM user_id_list")
+    fun getUserIdList() : LiveData<List<UserIDModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFoodList (listFood : List<FoodModel>)
+    suspend fun insertUserIDList (listFood : List<UserIDModel>)
 
-    @Query("DELETE FROM food_name_list")
+    @Query("DELETE FROM user_id_list")
     suspend fun delete()
 }

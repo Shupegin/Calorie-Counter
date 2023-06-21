@@ -1,4 +1,4 @@
-package com.example.caloriecounter.dialog
+package com.example.caloriecounter.pojo
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

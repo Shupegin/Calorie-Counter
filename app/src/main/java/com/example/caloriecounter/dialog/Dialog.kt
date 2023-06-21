@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.caloriecounter.MainViewModel
+import com.example.caloriecounter.pojo.FoodModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)

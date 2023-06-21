@@ -10,15 +10,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.caloriecounter.database.AppDatabase
+import com.example.caloriecounter.database.UserDatabase
 
 import com.example.caloriecounter.dialog.FoodMapper
-import com.example.caloriecounter.dialog.FoodModel
+import com.example.caloriecounter.pojo.FoodModel
 import com.example.caloriecounter.network.ApiFactory
+import com.example.caloriecounter.pojo.UserIDModel
+import com.example.caloriecounter.pojo.UserModelFireBase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,22 +37,22 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     var token : String? = ""
 
     private val db = AppDatabase.getInstance(application)
+    private val dbUId = UserDatabase.getInstance(application)
     val foodListDAO = db.foodsInfoDao().getFoodsList()
     private val _historyCalories : MutableLiveData<Int> = MutableLiveData()
     val addHistoryCalories : MutableLiveData<Int> = _historyCalories
+
 
     private val _day : MutableLiveData<String> = MutableLiveData()
     val addDay : MutableLiveData<String> = _day
 
     private var firebaseDatabase : FirebaseDatabase? = null
     private var userReference : DatabaseReference? = null
+    private var userIdReference : DatabaseReference? = null
     private var auth:  FirebaseAuth? = null
 
     private val _clientID : MutableLiveData<String> = MutableLiveData()
     val client : MutableLiveData<String> =  _clientID
-
-    private val _userId : MutableLiveData<String> = MutableLiveData()
-    val userId : MutableLiveData<String> =  _userId
 
     private val _imageQR : MutableLiveData<Bitmap> = MutableLiveData()
     val imageQR : MutableLiveData<Bitmap> = _imageQR
@@ -60,6 +64,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         auth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         userReference = firebaseDatabase?.getReference("calories")
+        userIdReference = firebaseDatabase?.getReference("Users")
         auth?.addAuthStateListener{
             _clientID.value = it.uid
         }
@@ -163,9 +168,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         } catch (e: WriterException){}
 
     }
-    fun userId(userId : String){
-        _userId.value = userId
-    }
+
 
     fun loadFirebaseData(){
         userReference?.addValueEventListener(object : ValueEventListener {
@@ -178,6 +181,29 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         })
 
     }
+    fun databaseEntryUser(id : String){
+        userIdReference?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(dataSnapshot in snapshot.children){
+                    val value = dataSnapshot.getValue(UserModelFireBase::class.java)
+                    if (value?.id.equals(id)){
+                        viewModelScope.launch {
+                            entryDatabase(id)
+                        }
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+    }
+   suspend fun entryDatabase(id: String){
+       val userid = UserIDModel(userId = id)
+       val listUserId = ArrayList<UserIDModel>()
+       listUserId.add(userid)
+       dbUId.userInfoDao().insertUserIDList(listUserId)
+    }
+
 }
 
 

@@ -47,7 +47,7 @@ fun VerticalProgressBar(viewModel: MainViewModel,
     LazyRow(modifier = Modifier
         .fillMaxWidth()
         .padding(bottom = 55.dp),){
-        items(4){
+        items(2){
             Column(
                 modifier = Modifier
                     .fillMaxSize()

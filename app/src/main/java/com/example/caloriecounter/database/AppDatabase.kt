@@ -1,13 +1,12 @@
 package com.example.caloriecounter.database
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.caloriecounter.dialog.FoodModel
+import com.example.caloriecounter.pojo.FoodModel
 
 @Database(entities = [FoodModel::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
