@@ -13,7 +13,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import androidx.navigation.compose.NavHost
@@ -38,9 +40,15 @@ class MainActivity : ComponentActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModelLogin = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModelRegistration = ViewModelProvider(this)[RegistrationViewModel::class.java]
+
+         mainViewModel.userListDAO.observe(this, Observer {
+             mainViewModel.loadFirebaseData(it)
+         })
+
         setContent {
             CalorieCounterTheme {
                    LoginApplication(viewModelLogin,viewModelRegistration, mainViewModel, this, this)
+
             }
         }
     }

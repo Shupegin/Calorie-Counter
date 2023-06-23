@@ -15,6 +15,7 @@ import com.example.caloriecounter.database.UserDatabase
 import com.example.caloriecounter.dialog.FoodMapper
 import com.example.caloriecounter.pojo.FoodModel
 import com.example.caloriecounter.network.ApiFactory
+import com.example.caloriecounter.pojo.SearchFood.UserCaloriesFirebase
 import com.example.caloriecounter.pojo.UserIDModel
 import com.example.caloriecounter.pojo.UserModelFireBase
 import com.google.firebase.auth.FirebaseAuth
@@ -36,11 +37,19 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     var food_id : Int? = 321312
     var token : String? = ""
 
+    val list  = ArrayList<UserModelFireBase>()
+
+
     private val db = AppDatabase.getInstance(application)
     private val dbUId = UserDatabase.getInstance(application)
     val foodListDAO = db.foodsInfoDao().getFoodsList()
+    val userListDAO = dbUId.userInfoDao().getUserIdList()
+
     private val _historyCalories : MutableLiveData<Int> = MutableLiveData()
-    val addHistoryCalories : MutableLiveData<Int> = _historyCalories
+//    val addHistoryCalories : MutableLiveData<Int> = _historyCalories
+
+    private val _listHistoryCalories : MutableLiveData<List<UserModelFireBase>> = MutableLiveData()
+    val addListHistoryCalories : MutableLiveData<List<UserModelFireBase>> = _listHistoryCalories
 
 
     private val _day : MutableLiveData<String> = MutableLiveData()
@@ -58,6 +67,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     val imageQR : MutableLiveData<Bitmap> = _imageQR
 
 
+
+
     init {
         authorizationRequest()
         getCurrentDate()
@@ -68,8 +79,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         auth?.addAuthStateListener{
             _clientID.value = it.uid
         }
-        loadFirebaseData()
     }
+
+
 
     @SuppressLint("SuspiciousIndentation")
     fun authorizationRequest() {
@@ -137,10 +149,50 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             }
         }
         _historyCalories.value = calories
+        updateCaloriesHistory()
     }
 
     fun getCaloriesWeek(){
         _historyCalories.value = 0
+    }
+
+    private fun updateCaloriesHistory() {
+        if (_listHistoryCalories.value.isNullOrEmpty()) {
+            _listHistoryCalories.value = list
+        }
+        updateUserCaloriesHistory("user1", _historyCalories.value)
+    }
+
+    private fun updateUserCaloriesHistory(name: String, value: Int?) {
+        var found = false;
+        for (user in list) {
+            if (user.name.equals(name)) {
+                found = true
+                user.dailyCalories = (value ?: 0).toString()
+                break
+            }
+        }
+        if (!found) {
+            list.add(UserModelFireBase(name = name, dailyCalories = (value ?: 0).toString()))
+        }
+    }
+
+    fun loadFirebaseData(listUser : List<UserIDModel>){
+        var userReference : DatabaseReference?
+        for(i in listUser){
+            userReference = firebaseDatabase?.getReference("calories/${i.userId}")
+            userReference?.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var total = 0
+                    for(dataSnapshot in snapshot.children){
+                        val value = dataSnapshot.getValue(UserCaloriesFirebase::class.java)
+                        total += value?.calories ?: 0
+                    }
+                    updateUserCaloriesHistory(i.userId, total)
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
     }
 
     fun textFilter(text: String) : Int{
@@ -170,17 +222,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
 
-    fun loadFirebaseData(){
-        userReference?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for(dataSnapshot in snapshot.children){
-                    var value = dataSnapshot.value
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
 
-    }
     fun databaseEntryUser(id : String){
         userIdReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

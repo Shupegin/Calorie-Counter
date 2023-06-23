@@ -1,13 +1,14 @@
 package com.example.caloriecounter.HistoryScreen
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -27,27 +28,45 @@ import com.example.caloriecounter.ui.theme.Gray500
 fun VerticalProgressBar(viewModel: MainViewModel,
                         owner: LifecycleOwner) {
     var progress by remember { mutableStateOf(0f) }
-    var numberOfCalories = viewModel.addHistoryCalories.observeAsState()
+    var listUsers = viewModel.addListHistoryCalories.observeAsState(listOf())
     var day = viewModel.addDay.observeAsState()
 
-    if (numberOfCalories.value != null) {
-        val caloriesPerDay = 2000
-        val calories = numberOfCalories.value!!.toFloat() / caloriesPerDay
 
-        progress = calories
-    }
-    val size by animateFloatAsState(
-        targetValue = progress,
-        tween(
-            durationMillis = 1000,
-            delayMillis = 100,
-            easing = LinearOutSlowInEasing
-        )
-    )
+
+
+//    for(itemUsers in listUsers.value){
+//        if (itemUsers.dailyCalories != null) {
+//            val caloriesPerDay = 2000
+//            val calories  = itemUsers.dailyCalories!!.toFloat() / (caloriesPerDay)
+//
+//            progress = calories
+//        }
+//
+//
+//    }
+
+
+
+
+
+
+
     LazyRow(modifier = Modifier
         .fillMaxWidth()
         .padding(bottom = 55.dp),){
-        items(2){
+
+        items(listUsers.value){it
+            if (it.dailyCalories != null) {
+                val caloriesPerDay = 2000
+                val calories  = it.dailyCalories!!.toFloat() / (caloriesPerDay)
+
+                progress = calories
+            }
+            val  size by   animateFloatAsState(targetValue = progress,
+                tween(durationMillis = 1000,
+                    delayMillis = 100,
+                    easing = LinearOutSlowInEasing))
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -113,7 +132,7 @@ fun VerticalProgressBar(viewModel: MainViewModel,
                             // .padding(horizontal = 20.dp)
                             //.fillMaxWidth()
                             ,
-                            text = "${numberOfCalories.value}"
+                            text = "${it.dailyCalories}"
                         )
                     }
                 }

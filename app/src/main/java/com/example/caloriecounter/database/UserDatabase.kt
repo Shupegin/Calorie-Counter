@@ -23,6 +23,7 @@ abstract class UserDatabase : RoomDatabase() {
                     .build()
                 db = instance
                 instance.openHelper.writableDatabase
+                instance.openHelper.readableDatabase
                 return instance
             }
         }
