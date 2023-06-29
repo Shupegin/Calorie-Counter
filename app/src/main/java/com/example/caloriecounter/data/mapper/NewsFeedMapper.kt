@@ -6,17 +6,21 @@ import com.example.caloriecounter.pojo.FoodModel
 
 class FoodMapper {
 
-    fun mapResponseToPosts(responseDto:SearchPojoFoods ): List<FoodModel> {
+    fun mapResponseToPosts(responseDto: SearchPojoFoods): List<FoodModel> {
         val result = mutableListOf<FoodModel>()
-        val posts = responseDto.foods?.food
+        val posts = responseDto.foods?.result?.food
 
         if (posts != null) {
             for (post in posts) {
-                val foodModel = FoodModel(
-                    food = post.foodName,
-                    desctription = post.foodDescription
-                )
-                result.add(foodModel)
+
+                for (item in post.servings!!.serving){
+                    val foodModel = FoodModel(
+                        food_id = post.foodId?.toInt()!!,
+                        calories = item.calories?.toInt()
+                        )
+                    result.add(foodModel)
+                }
+
             }
         }else{
             val foodModel = FoodModel(

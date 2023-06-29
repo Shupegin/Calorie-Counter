@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class SearchPojoFoods (
-  @SerializedName("foods") var foods : Foods? = null,
+  @SerializedName("foods_search") var foods : Foods? = null,
   @SerializedName("error") var error : ApiError?  = null
 )
 

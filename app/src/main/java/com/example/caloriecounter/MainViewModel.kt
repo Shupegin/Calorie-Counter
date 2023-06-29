@@ -25,8 +25,10 @@ import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import okhttp3.Credentials
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList
 
 
@@ -88,9 +90,10 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         viewModelScope.launch {
             val clientId = "9bf375c35df743e7be742724d0a1fd31";
             val clientSecret= "0e8023668fa943b3ab9555065c53be4e";
-            var credentials = "OWJmMzc1YzM1ZGY3NDNlN2JlNzQyNzI0ZDBhMWZkMzE6MGU4MDIzNjY4ZmE5NDNiM2FiOTU1NTA2NWM1M2JlNGU="
-            val response = ApiFactory.getApiAuthorization().requestAuthorization(auth = "Basic $credentials")
-            Log.d("TESTER","request = ${response.accessToken}")
+
+            var auth = Credentials.basic(clientId, clientSecret)
+            val response = ApiFactory.getApiAuthorization().requestAuthorization(auth = auth)
+            Log.d("TESTER","request token = ${response.accessToken}")
 
             token = response.accessToken
         }
@@ -99,21 +102,22 @@ class MainViewModel(application: Application): AndroidViewModel(application){
  fun loadSearchFood(foodModel : FoodModel) {
      val nameFood : String = foodModel.food.toString()
         viewModelScope.launch {
-            val response = ApiFactory.getApi(token.toString()).loadSearchFoods(search_expression = nameFood)
+            val response = ApiFactory.getApi(token?: "").loadSearchFoods(search_expression = nameFood)
             val foodModelList = mapper.mapResponseToPosts(response)
-            Log.d("TESTER","request = ${response.foods}")
+            Log.d("TESTER","request 2= ${response.foods?.result?.food}")
             var calories = 0
             for (item in foodModelList){
                     food_id = item.food_id
+                    Log.d("TESTER","item = ${item.calories} ")
                 try {
-                    var desctription = textFilter(item.desctription.toString())
-                    calories += desctription
+                    var desctription = item.calories
+                    calories += desctription ?: 0
                 }catch (e : java.lang.Exception){
 
                 }
             }
-//            calories /= foodModelList.size
-            foodModel.calories = 200
+            calories /= foodModelList.size
+            foodModel.calories = calories
             foodModel.dataCurrent = getCurrentDate()
             val listFood = ArrayList<FoodModel>()
             listFood.add(foodModel)
@@ -164,16 +168,12 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
     private fun updateUserCaloriesHistory(name: String, value: Int?) {
-        var found = false;
-        for (user in list) {
-            if (user.name.equals(name)) {
-                found = true
-                user.dailyCalories = (value ?: 0).toString()
-                break
-            }
-        }
-        if (!found) {
+        try {
+            val user = list.first { it.name.equals(name) }
+            user.dailyCalories = (value ?: 0).toString()
+        } catch (ex: NoSuchElementException) {
             list.add(UserModelFireBase(name = name, dailyCalories = (value ?: 0).toString()))
+            list.reverse()
         }
     }
 
@@ -186,7 +186,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
                     var total = 0
                     for(dataSnapshot in snapshot.children){
                         val value = dataSnapshot.getValue(UserCaloriesFirebase::class.java)
-                        total += value?.calories ?: 0
+                        if (getCurrentDate() == value?.dataCurrent) {
+                            total += value?.calories ?: 0
+                        }
                     }
                     updateUserCaloriesHistory(i.userId, total)
                 }

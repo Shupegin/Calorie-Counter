@@ -1,14 +1,14 @@
 package com.example.caloriecounter
 
-import com.example.caloriecounter.pojo.SearchFood.ApiError
+import com.example.caloriecounter.pojo.SearchFood.ResultFood
 import com.google.gson.annotations.SerializedName
 
 
 data class Foods (
 
-  @SerializedName("food"          ) var food         : ArrayList<Food> = arrayListOf(),
-  @SerializedName("max_results"   ) var maxResults   : String?         = null,
-  @SerializedName("page_number"   ) var pageNumber   : String?         = null,
-  @SerializedName("total_results" ) var totalResults : String?         = null
+  @SerializedName("results"       ) var result       : ResultFood? = null,
+  @SerializedName("max_results"   ) var maxResults   : String?     = null,
+  @SerializedName("page_number"   ) var pageNumber   : String?     = null,
+  @SerializedName("total_results" ) var totalResults : String?     = null
 
   )
