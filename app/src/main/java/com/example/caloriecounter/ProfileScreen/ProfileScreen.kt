@@ -42,8 +42,7 @@ fun ProfileScreen(viewModel: MainViewModel,
         imageQR = it
     })
     Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Green100),
+        .fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

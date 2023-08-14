@@ -20,7 +20,6 @@ fun HistoryScreen(viewModel: MainViewModel,
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(color = Green700)
     ){
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center) {

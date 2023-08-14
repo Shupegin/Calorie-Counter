@@ -41,6 +41,5 @@ class RegistrationViewModel : ViewModel() {
         }?.addOnFailureListener{
             error.value = it.message
         }
-
     }
 }

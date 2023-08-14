@@ -2,9 +2,24 @@ package com.example.caloriecounter
 
 
 import android.content.Context
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontFamily
+import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.caloriecounter.HistoryScreen.HistoryScreen
@@ -22,8 +37,10 @@ fun MainScreen(
     val dialogState = remember {
         mutableStateOf(false)
     }
+
+
     if (dialogState.value){
-        dialog(dialogState, mainViewModel)
+       dialog(dialogState = dialogState, viewModel = mainViewModel )
     }
 
 
@@ -61,3 +78,4 @@ fun MainScreen(
             profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner,context)})
     }
 }
+
