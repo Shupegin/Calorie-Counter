@@ -41,10 +41,12 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
         Column() {
             OutlinedTextField(
                 value = email,
-                onValueChange = {email = it},
+                onValueChange = {it.let {
+                    email = it
+                }},
                 label = {
                     Text(
-                        text = "Введите логин",
+                        text = "Введите email",
                         style = TextStyle(
                             color = Color.Black,
                         )
@@ -58,7 +60,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
 
             OutlinedTextField(
                 value = password,
-                onValueChange = {password = it},
+                onValueChange = {it.let {
+                    password = it
+                }},
                 label = {
                     Text(
                         text = "Введите пароль",

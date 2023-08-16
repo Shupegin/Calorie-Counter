@@ -50,7 +50,9 @@ fun dialog(dialogState: MutableState<Boolean>,
 
                         OutlinedTextField(
                             value = userfood,
-                            onValueChange = { userfood = it},
+                            onValueChange = { it.let {
+                                userfood = it
+                            }},
                             label = {
                                 Text(
                                     text = "что ел?",
@@ -66,7 +68,9 @@ fun dialog(dialogState: MutableState<Boolean>,
 
                         OutlinedTextField(
                             value = numberOfGrams,
-                            onValueChange = { numberOfGrams = it },
+                            onValueChange = { it.let {
+                                numberOfGrams  = it
+                            } },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             label = {
                                 Text(
@@ -83,7 +87,9 @@ fun dialog(dialogState: MutableState<Boolean>,
 
                         OutlinedTextField(
                             value = numberOfCalories,
-                            onValueChange = { numberOfCalories = it },
+                            onValueChange = {it.let {
+                                numberOfCalories = it
+                            } },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             label = {
                                 Text(
@@ -104,7 +110,10 @@ fun dialog(dialogState: MutableState<Boolean>,
                             }
                             Spacer(modifier = Modifier.padding(end = 20.dp))
                             Button(onClick = {
-                                val foodModel = FoodModel(food = userfood, calories = numberOfCalories.toInt(), gramm = numberOfGrams.toInt())
+                                val foodModel = FoodModel(food = userfood,
+                                    calories = numberOfCalories.toIntOrNull() ?: 0,
+                                    gramm = numberOfGrams.toIntOrNull() ?: 0
+                                )
                                 viewModel.addInfoFoodBtn(foodModel)
                                 dialogState.value = false
                             }) {

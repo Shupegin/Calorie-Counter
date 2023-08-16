@@ -17,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,16 +28,35 @@ import com.example.caloriecounter.ProfileScreen.ProfileViewModel
 import com.example.caloriecounter.RegistrationScreen.RegistrationScreen
 import com.example.caloriecounter.RegistrationScreen.RegistrationViewModel
 import com.example.caloriecounter.ui.theme.CalorieCounterTheme
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModelLogin: LoginViewModel
     private lateinit var viewModelRegistration: RegistrationViewModel
+
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.FLEXIBLE
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if(updateType == AppUpdateType.FLEXIBLE){
+            appUpdateManager.registerListener(installStateUpdateListener)
+        }
+        checkForAppUpdate()
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModelLogin = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModelRegistration = ViewModelProvider(this)[RegistrationViewModel::class.java]
@@ -51,6 +71,30 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (updateType == AppUpdateType.IMMEDIATE){
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            if(info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    123)
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(updateType == AppUpdateType.FLEXIBLE){
+            appUpdateManager.unregisterListener(installStateUpdateListener)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -64,6 +108,43 @@ class MainActivity : ComponentActivity() {
             super.onActivityResult(requestCode, resultCode, data)
 
         }
+
+
+    }
+
+    private val installStateUpdateListener = InstallStateUpdatedListener { state->
+        if(state.installStatus() == InstallStatus.DOWNLOADED){
+            Toast.makeText(applicationContext,
+                "DownLoad successful.Restarting app in 5 seconds",
+                Toast.LENGTH_LONG
+            ).show()
+            lifecycleScope.launch {
+                delay(5.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
+
+    }
+
+
+
+   private fun checkForAppUpdate(){
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info->
+                val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                val isUpdateAllowed = when(updateType){
+                    AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                    AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                    else -> false
+                }
+                if (isUpdateAvailable && isUpdateAllowed){
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        123
+                    )
+                }
+            }
     }
 }
 
@@ -79,6 +160,7 @@ fun LoginApplication(viewModel: LoginViewModel,
         composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration)})
         composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context) })
     })
+
 }
 
 

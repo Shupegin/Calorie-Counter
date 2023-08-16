@@ -41,7 +41,9 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
             Spacer(modifier = Modifier.padding(20.dp))
             OutlinedTextField(
                 value = email,
-                onValueChange = {email = it},
+                onValueChange = {it.let {
+                    email = it
+                }},
                 label = {
                     Text(
                         text = "Введите email ",
@@ -58,7 +60,9 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
 
             OutlinedTextField(
                 value = password,
-                onValueChange = {password = it},
+                onValueChange = { it.let {
+                    password = it
+                }},
                 label = {
                     Text(
                         text = "Введите пароль",
@@ -75,7 +79,9 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
 
             OutlinedTextField(
                 value = repeatPassword,
-                onValueChange = {repeatPassword = it},
+                onValueChange = {it.let {
+                    repeatPassword = it
+                }},
                 label = {
                     Text(
                         text = "повторите пароль",
@@ -91,7 +97,9 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
             )
             OutlinedTextField(
                 value = calories,
-                onValueChange = {calories = it},
+                onValueChange = {it.let {
+                    calories = it
+                }},
                 label = {
                     Text(
                         text = "Введите ориентрировочное колличество каллорий в день",
@@ -106,7 +114,7 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
                 )
             )
             Button(onClick = {
-                viewModel.singUp(email = email, password = password, calories = calories.toInt())
+                viewModel.singUp(email = email, password = password, calories = calories.toIntOrNull() ?: 0)
             }) {
                 Text(text = "Регистрация")
             }
