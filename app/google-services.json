@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "964909450005",
+    "firebase_url": "https://calories-147ea-default-rtdb.firebaseio.com",
     "project_id": "calories-147ea",
     "storage_bucket": "calories-147ea.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:964909450005:android:c3b49456f395111ebd9f1c",
+        "mobilesdk_app_id": "1:964909450005:android:425639b6cec22facbd9f1c",
         "android_client_info": {
-          "package_name": "com.example.caloriecounter"
+          "package_name": "cal.calor.caloriecounter"
         }
       },
       "oauth_client": [
