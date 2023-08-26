@@ -1,6 +1,8 @@
 package cal.calor.caloriecounter.LoginScreen
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -15,16 +17,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 
 import androidx.navigation.NavController
 
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: LifecycleOwner){
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: LifecycleOwner, context : Context){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val error = viewModel.error.observeAsState("")
+    val error_e = viewModel.error_e.observeAsState()
     viewModel.user.observe(owner, androidx.lifecycle.Observer {
         navController.navigate("activity_main") {
                 popUpTo(0)
@@ -75,7 +79,13 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
                 )
             )
             Button(onClick = {
-                viewModel.login(email = email, password =  password)
+
+                if (error_e.value != true){
+                    viewModel.login(email = email, password =  password)
+                }else{
+                    Toast.makeText(context,"Введите пароль или email",Toast.LENGTH_SHORT).show()
+                }
+
 
             }) {
                 Text(text = "Войти")

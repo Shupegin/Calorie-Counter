@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import cal.calor.caloriecounter.ui.theme.Green700
 import cal.calor.caloriecounter.ui.theme.Сoral
 import com.example.caloriecounter.cardFood
 
@@ -33,7 +32,7 @@ fun HomeScreen(
     paddingValues: PaddingValues
 ){
     Box(Modifier
-        .background(color = Green700)
+
     ){
         val foodList = viewModel.foodListDAO.observeAsState(listOf())
         val list = foodList.value.groupBy { it.dataCurrent }

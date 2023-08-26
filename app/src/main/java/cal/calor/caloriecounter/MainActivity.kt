@@ -68,6 +68,8 @@ class MainActivity : ComponentActivity() {
         }
 
 
+
+
     }
 
     override fun onResume() {
@@ -151,8 +153,8 @@ fun LoginApplication(viewModel: LoginViewModel,
                      context: Context){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login_page", builder ={
-        composable("login_page", content = { LoginScreen(navController = navController,viewModel= viewModel, owner = owner)})
-        composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration)})
+        composable("login_page", content = { LoginScreen(navController = navController,viewModel= viewModel, owner = owner, context = context)})
+        composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration,owner = owner, context = context)})
         composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context) })
     })
 
