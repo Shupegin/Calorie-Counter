@@ -68,6 +68,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     private val _imageQR : MutableLiveData<Bitmap> = MutableLiveData()
     val imageQR : MutableLiveData<Bitmap> = _imageQR
 
+    val listFood : ArrayList<FoodModel> = ArrayList()
+
 
 
 
@@ -119,13 +121,19 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             calories /= foodModelList.size
 //            foodModel.calories = calories
             foodModel.dataCurrent = getCurrentDate()
-            val listFood = ArrayList<FoodModel>()
+            listFood.clear()
             listFood.add(foodModel)
-            db.foodsInfoDao().insertFoodList(listFood)
+            db.foodsInfoDao().insertFoodList(foodModel)
 
             auth?.addAuthStateListener{
                 it.uid?.let { it1 -> userReference?.child(it1)?.push()?.setValue(foodModel) }
             }
+        }
+    }
+
+    fun deleteFood(foodModel: FoodModel){
+        viewModelScope.launch {
+            db.foodsInfoDao().remove( id = foodModel.food_id)
         }
     }
 

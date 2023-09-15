@@ -8,12 +8,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -23,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import cal.calor.caloriecounter.ui.theme.Сoral
 import com.example.caloriecounter.cardFood
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -56,7 +60,29 @@ fun HomeScreen(
                   }
               }
               items(listFood){foodModel ->
-                  cardFood(foodModel = foodModel)
+                  val dismissState = rememberDismissState()
+                  if(dismissState.isDismissed(DismissDirection.EndToStart)){
+                      viewModel.deleteFood(foodModel)
+                  }
+                  SwipeToDismiss(
+                      state = dismissState,
+                      directions = setOf(DismissDirection.EndToStart)
+
+                      , background = {
+                          Box (
+                              modifier = Modifier
+                                  .padding(16.dp)
+                                  .fillMaxSize()
+                                  .background(Color.Red.copy(alpha = 0.5f)),
+                              contentAlignment = Alignment.BottomEnd
+                          ){
+                              Text(modifier = Modifier.padding(16.dp), text = "Удалить элемент")
+                          }
+                      }
+                  ) {
+                      cardFood(foodModel = foodModel)
+                  }
+
               }
             item() {
                 Box(modifier = Modifier

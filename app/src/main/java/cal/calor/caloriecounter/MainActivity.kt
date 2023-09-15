@@ -48,10 +48,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
-        if(updateType == AppUpdateType.FLEXIBLE){
-            appUpdateManager.registerListener(installStateUpdateListener)
+        if(true) {
+            if (updateType == AppUpdateType.FLEXIBLE) {
+                appUpdateManager.registerListener(installStateUpdateListener)
+            }
+            checkForAppUpdate()
         }
-        checkForAppUpdate()
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModelLogin = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModelRegistration = ViewModelProvider(this)[RegistrationViewModel::class.java]

@@ -2,6 +2,7 @@ package cal.calor.caloriecounter.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,8 +14,9 @@ interface FoodsInfoDao {
     fun getFoodsList() : LiveData<List<FoodModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFoodList (listFood : List<FoodModel>)
+    suspend fun insertFoodList (foodModel: FoodModel)
 
-    @Query("DELETE FROM food_name_list")
-    suspend fun delete()
+    @Query("DELETE FROM food_name_list WHERE food_id =:id")
+    suspend fun remove(id : Int)
 }
+
