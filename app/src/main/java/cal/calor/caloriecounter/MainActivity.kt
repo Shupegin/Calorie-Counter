@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
-        if(true) {
+        if(false) {
             if (updateType == AppUpdateType.FLEXIBLE) {
                 appUpdateManager.registerListener(installStateUpdateListener)
             }

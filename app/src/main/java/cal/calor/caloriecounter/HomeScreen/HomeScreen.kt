@@ -59,7 +59,7 @@ fun HomeScreen(
                       Text(text = dataCurrent.toString(), style = MaterialTheme.typography.h6)
                   }
               }
-              items(listFood){foodModel ->
+              items(listFood, key= {it.food_id}){foodModel ->
                   val dismissState = rememberDismissState()
                   if(dismissState.isDismissed(DismissDirection.EndToStart)){
                       viewModel.deleteFood(foodModel)
