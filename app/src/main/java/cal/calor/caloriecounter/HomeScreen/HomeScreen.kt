@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cal.calor.caloriecounter.ui.theme.BackgroundGray
 import cal.calor.caloriecounter.ui.theme.Сoral
 import com.example.caloriecounter.cardFood
 
@@ -35,7 +36,10 @@ fun HomeScreen(
     onItem: () -> Unit,
     paddingValues: PaddingValues
 ){
-    Box(Modifier
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(BackgroundGray)
 
     ){
         val foodList = viewModel.foodListDAO.observeAsState(listOf())

@@ -2,22 +2,28 @@ package cal.calor.caloriecounter
 
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import cal.calor.caloriecounter.HistoryScreen.HistoryScreen
 import cal.calor.caloriecounter.ProfileScreen.ProfileScreen
 import cal.calor.caloriecounter.dialog.dialog
 import cal.calor.caloriecounter.navigation.*
+import cal.calor.caloriecounter.ui.theme.BackgroundBottom
 
 
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel,
     owner: LifecycleOwner,
-    context: Context
+    context: Context,
+    navController: NavController
 ){
     val dialogState = remember {
         mutableStateOf(false)
@@ -31,7 +37,7 @@ fun MainScreen(
 
     val navigationState = rememberNavigationState()
     Scaffold(bottomBar ={
-        BottomNavigation {
+        BottomNavigation(backgroundColor = BackgroundBottom) {
             val navBackStackEntry  by navigationState.navHostController.currentBackStackEntryAsState()
             val currentRout = navBackStackEntry?.destination?.route
             val item = listOf(
@@ -45,7 +51,7 @@ fun MainScreen(
                     onClick = { navigationState.navigateTo(item.screen.route)
                               },
                     icon = {
-                        Icon(item.icon, contentDescription = null )
+                        Icon(item.icon, contentDescription = null, )
                     },
                     label = {
                         Text(text = stringResource(id = item.titleResId))
@@ -55,12 +61,12 @@ fun MainScreen(
                 )
             }
         }
-    },){ paddingValues ->
+    }){ paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
             homeScreenContent =    { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = {dialogState.value = true})},
             historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
-            profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner,context)})
+            profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner,context, navController)})
     }
 }
 

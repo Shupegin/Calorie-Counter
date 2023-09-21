@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.lifecycle.Observer
+import cal.calor.caloriecounter.ui.theme.BackgroundGray
+
 @Composable
 fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewModel,
                        owner: LifecycleOwner,context : Context){
@@ -31,7 +33,9 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
     val error_e = viewModel.error_e.observeAsState("")
 
     Box(modifier = Modifier
-        .fillMaxSize(),
+        .fillMaxSize()
+        .background(BackgroundGray),
+
         contentAlignment = Alignment.Center
     )
 

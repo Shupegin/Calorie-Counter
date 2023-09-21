@@ -3,6 +3,7 @@ package cal.calor.caloriecounter.LoginScreen
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -17,9 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-
 import androidx.navigation.NavController
+import cal.calor.caloriecounter.ui.theme.BackgroundGray
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -37,7 +37,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
 
 
     Box(modifier = Modifier
-        .fillMaxSize(),
+        .fillMaxSize()
+        .background(BackgroundGray),
         contentAlignment = Alignment.Center
     ){
         Column() {

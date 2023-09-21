@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import cal.calor.caloriecounter.AddNewFoodScreen.AddFoodScreen
+import cal.calor.caloriecounter.AddNewFoodScreen.AddFoodScreenViewModel
 import cal.calor.caloriecounter.LoginScreen.LoginScreen
 import cal.calor.caloriecounter.LoginScreen.LoginViewModel
 import cal.calor.caloriecounter.RegistrationScreen.RegistrationScreen
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModelLogin: LoginViewModel
     private lateinit var viewModelRegistration: RegistrationViewModel
+    private lateinit var viewModelAddFoodScreen: AddFoodScreenViewModel
 
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType = AppUpdateType.FLEXIBLE
@@ -57,6 +60,7 @@ class MainActivity : ComponentActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModelLogin = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModelRegistration = ViewModelProvider(this)[RegistrationViewModel::class.java]
+        viewModelAddFoodScreen = ViewModelProvider(this)[AddFoodScreenViewModel::class.java]
 
          mainViewModel.userListDAO.observe(this, Observer {
              mainViewModel.loadFirebaseData(it)
@@ -64,7 +68,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CalorieCounterTheme {
-                   LoginApplication(viewModelLogin,viewModelRegistration, mainViewModel, this, this)
+                   LoginApplication(viewModelLogin,viewModelRegistration, mainViewModel, viewModelAddFoodScreen,this, this)
 
             }
         }
@@ -151,13 +155,15 @@ class MainActivity : ComponentActivity() {
 fun LoginApplication(viewModel: LoginViewModel,
                      viewModelRegistration: RegistrationViewModel,
                      mainViewModel : MainViewModel,
+                     viewModelAddFoodScreen : AddFoodScreenViewModel,
                      owner: LifecycleOwner,
                      context: Context){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login_page", builder ={
         composable("login_page", content = { LoginScreen(navController = navController,viewModel= viewModel, owner = owner, context = context)})
         composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration,owner = owner, context = context)})
-        composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context) })
+        composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context,navController = navController) })
+        composable("Add_food_screen", content = {AddFoodScreen(viewModel= viewModelAddFoodScreen)})
     })
 
 }
