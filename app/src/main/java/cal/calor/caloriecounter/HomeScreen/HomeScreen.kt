@@ -67,6 +67,7 @@ fun HomeScreen(
                   val dismissState = rememberDismissState()
                   if(dismissState.isDismissed(DismissDirection.EndToStart)){
                       viewModel.deleteFood(foodModel)
+                      viewModel.removeInFirebaseDatabase(foodModel)
                   }
                   SwipeToDismiss(
                       state = dismissState,

@@ -124,9 +124,11 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             listFood.clear()
             listFood.add(foodModel)
             db.foodsInfoDao().insertFoodList(foodModel)
+            var currentData  = removePunctuations(foodModel.dataCurrent.toString())
 
             auth?.addAuthStateListener{
-                it.uid?.let { it1 -> userReference?.child(it1)?.push()?.setValue(foodModel) }
+                it.uid?.let { it1 -> userReference?.child(it1)?.child(currentData)?.
+                child(foodModel.food.toString())?.setValue(foodModel) }
             }
         }
     }
@@ -135,6 +137,19 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         viewModelScope.launch {
             db.foodsInfoDao().remove( id = foodModel.food_id)
         }
+    }
+
+    fun removeInFirebaseDatabase(foodModel: FoodModel){
+        var data = removePunctuations(foodModel.dataCurrent.toString())
+        auth?.addAuthStateListener{
+
+            it.uid?.let { it1 -> userReference?.child(it1)?.child(data)?.child(foodModel.food.toString())?.removeValue()}
+        }
+    }
+
+
+    fun removePunctuations(source : String) : String{
+        return source.replace("\\p{Punct}".toRegex(),"")
     }
 
 
