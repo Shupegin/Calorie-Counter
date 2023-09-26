@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import cal.calor.caloriecounter.MainViewModel
 import cal.calor.caloriecounter.pojo.FoodModel
 
@@ -22,10 +25,17 @@ import cal.calor.caloriecounter.pojo.FoodModel
 @Composable
 fun dialog(dialogState: MutableState<Boolean>,
            viewModel: MainViewModel,
+           owner: LifecycleOwner
 ){
-    var userfood by remember { mutableStateOf("") }
+    var userFood by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
     var numberOfGrams by remember { mutableStateOf("") }
     var numberOfCalories by remember { mutableStateOf("") }
+    viewModel.calories.observe(owner, Observer {
+        numberOfCalories = it.toString()
+    })
+
+
         Dialog(
             onDismissRequest = {
                 dialogState.value = false
@@ -48,9 +58,9 @@ fun dialog(dialogState: MutableState<Boolean>,
                         Text(text = "Дата: ${viewModel.getCurrentDate()} ")
 
                         OutlinedTextField(
-                            value = userfood,
+                            value = userFood,
                             onValueChange = { it.let {
-                                userfood = it
+                                userFood = it
                             }},
                             label = {
                                 Text(
@@ -109,15 +119,35 @@ fun dialog(dialogState: MutableState<Boolean>,
                             }
                             Spacer(modifier = Modifier.padding(end = 20.dp))
                             Button(onClick = {
-                                val foodModel = FoodModel(food = userfood,
+                                val foodModel = FoodModel(
+                                    category= category,
+                                    food = userFood,
                                     calories = numberOfCalories.toIntOrNull() ?: 0,
                                     gramm = numberOfGrams.toIntOrNull() ?: 0
                                 )
                                 viewModel.addInfoFoodBtn(foodModel)
+                                viewModel.loadFirebaseFood(foodModel)
+
                                 dialogState.value = false
+
                             }) {
                                 Text(text = "Ок")
                             }
+                        }
+
+                        Button(onClick = {
+
+                            val foodModel = FoodModel(
+                                category= category,
+                                food = userFood,
+                                calories = numberOfCalories.toIntOrNull() ?: 0,
+                                gramm = numberOfGrams.toIntOrNull() ?: 0
+                            )
+                            viewModel.loadFirebaseFood(foodModel)
+
+
+                        }) {
+                            Text(text = "Обновить")
                         }
                     }
                 }

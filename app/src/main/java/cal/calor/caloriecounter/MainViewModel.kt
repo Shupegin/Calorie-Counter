@@ -16,9 +16,11 @@ import cal.calor.caloriecounter.dialog.FoodMapper
 
 import cal.calor.caloriecounter.pojo.FoodModel
 import cal.calor.caloriecounter.network.ApiFactory
+import cal.calor.caloriecounter.pojo.FoodSearchFirebase
 import cal.calor.caloriecounter.pojo.SearchFood.UserCaloriesFirebase
 import cal.calor.caloriecounter.pojo.UserIDModel
 import cal.calor.caloriecounter.pojo.UserModelFireBase
+import com.example.caloriecounter.cardFood
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.zxing.BarcodeFormat
@@ -64,6 +66,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     private val _clientID : MutableLiveData<String> = MutableLiveData()
     val client : MutableLiveData<String> =  _clientID
+
+    private val _calories : MutableLiveData<String> = MutableLiveData()
+    val calories : MutableLiveData<String> =  _calories
 
     private val _imageQR : MutableLiveData<Bitmap> = MutableLiveData()
     val imageQR : MutableLiveData<Bitmap> = _imageQR
@@ -221,6 +226,34 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         }
     }
 
+    fun loadFirebaseFood(foodModel : FoodModel) {
+        var calories = 0
+
+
+        val userReference : DatabaseReference?
+        userReference = firebaseDatabase?.getReference("food/${foodModel.food}")
+        userReference?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                var size = 0
+                var result = 0
+                for(dataSnapshot in snapshot.children){
+                    val value = dataSnapshot.getValue(FoodSearchFirebase::class.java)
+                    size++
+                    calories += value?.calories ?: 0
+                }
+                if (calories != 0){
+                    calories /= size
+                    result = (foodModel.gramm?: 0) * calories / 100
+                }
+                _calories.value = result.toString()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
     fun textFilter(text: String) : Int{
         val index = text.lastIndexOf("-")
         val filteredText = text.substring(index + 2).substringBefore("|")
@@ -263,7 +296,6 @@ class MainViewModel(application: Application): AndroidViewModel(application){
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
     }
    suspend fun entryDatabase(id: String){
        val userid = UserIDModel(userId = id)
@@ -271,7 +303,6 @@ class MainViewModel(application: Application): AndroidViewModel(application){
        listUserId.add(userid)
        dbUId.userInfoDao().insertUserIDList(listUserId)
     }
-
 }
 
 

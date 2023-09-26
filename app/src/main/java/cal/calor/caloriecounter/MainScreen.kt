@@ -31,7 +31,7 @@ fun MainScreen(
 
 
     if (dialogState.value){
-       dialog(dialogState = dialogState, viewModel = mainViewModel )
+       dialog(dialogState = dialogState, viewModel = mainViewModel, owner )
     }
 
 
