@@ -202,15 +202,16 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     fun loadFirebaseData(listUser : List<UserIDModel>){
         var userReference : DatabaseReference?
+        val data = removePunctuations(getCurrentDate())
         for(i in listUser){
-            userReference = firebaseDatabase?.getReference("calories/${i.userId}")
+            userReference = firebaseDatabase?.getReference("calories/${i.userId}/${data}")
             userReference?.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var total = 0
                     for(dataSnapshot in snapshot.children){
                         val value = dataSnapshot.getValue(UserCaloriesFirebase::class.java)
                         if (getCurrentDate() == value?.dataCurrent) {
-                            total += value?.calories ?: 0
+                            total += value.calories ?: 0
                         }
                     }
                     updateUserCaloriesHistory(i.userId, total)
