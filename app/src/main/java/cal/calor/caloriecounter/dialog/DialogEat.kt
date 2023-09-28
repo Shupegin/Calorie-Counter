@@ -1,6 +1,7 @@
 package cal.calor.caloriecounter.dialog
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -115,8 +116,11 @@ fun dialog(dialogState: MutableState<Boolean>,
                             }
                             Spacer(modifier = Modifier.padding(end = 20.dp))
                             Button(onClick = {
+
+                                var _category = viewModel.splitName(userFood)
+
                                 val foodModel = FoodModel(
-                                    category= category,
+                                    category= _category,
                                     food = userFood,
                                     calories = numberOfCalories.toIntOrNull() ?: 0,
                                     gramm = numberOfGrams.toIntOrNull() ?: 0
@@ -132,9 +136,11 @@ fun dialog(dialogState: MutableState<Boolean>,
                         }
 
                         Button(onClick = {
+                            var _category = viewModel.splitName(userFood)
+
 
                             val foodModel = FoodModel(
-                                category= category,
+                                category= _category,
                                 food = userFood,
                                 calories = numberOfCalories.toIntOrNull() ?: 0,
                                 gramm = numberOfGrams.toIntOrNull() ?: 0

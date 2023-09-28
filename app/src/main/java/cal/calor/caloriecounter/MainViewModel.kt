@@ -5,6 +5,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,7 @@ import cal.calor.caloriecounter.dialog.FoodMapper
 
 import cal.calor.caloriecounter.pojo.FoodModel
 import cal.calor.caloriecounter.network.ApiFactory
+import cal.calor.caloriecounter.pojo.FoodSearchCategoryFirebase
 import cal.calor.caloriecounter.pojo.FoodSearchFirebase
 import cal.calor.caloriecounter.pojo.SearchFood.UserCaloriesFirebase
 import cal.calor.caloriecounter.pojo.UserIDModel
@@ -33,7 +35,6 @@ import java.util.*
 import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 
 class MainViewModel(application: Application): AndroidViewModel(application){
@@ -42,6 +43,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     var token : String? = ""
 
     val list  = ArrayList<UserModelFireBase>()
+
+    var result = " "
+
 
 
     private val db = AppDatabase.getInstance(application)
@@ -228,30 +232,59 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     fun loadFirebaseFood(foodModel : FoodModel) {
         var calories = 0
-
-
+        categoryFirebase(foodModel)
         val userReference : DatabaseReference?
-        userReference = firebaseDatabase?.getReference("food/${foodModel.food}")
+
+        userReference = firebaseDatabase?.getReference("food/${result}")
         userReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
-                var size = 0
                 var result = 0
                 for(dataSnapshot in snapshot.children){
                     val value = dataSnapshot.getValue(FoodSearchFirebase::class.java)
-                    size++
-                    calories += value?.calories ?: 0
+                    Log.d("RRR","5 = ${value?.name}")
+                    if(value?.name?.contains(foodModel.food.toString())!!){
+                        calories = value?.calories ?: 0
+                    }
                 }
                 if (calories != 0){
-                    calories /= size
+//                    calories /= size
                     result = (foodModel.gramm?: 0) * calories / 100
                 }
+
                 _calories.value = result.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+   private fun categoryFirebase(foodModel: FoodModel){
+
+       var category = foodModel.category
+       val userReference : DatabaseReference?
+       userReference = firebaseDatabase?.getReference("food")
+       userReference?.addValueEventListener(object : ValueEventListener {
+           override fun onDataChange(snapshot: DataSnapshot) {
+               for(dataSnapshot in snapshot.children){
+                   val _value = dataSnapshot.key
+                   if(_value?.contains(category.toString())!!){
+                       result = _value
+
+                   }
+
+               }
+
+           }
+
+           override fun onCancelled(error: DatabaseError) {
+           }
+       })
+    }
+
+    fun splitName(name: String): String {
+        val names = name.trim().split(Regex("\\s+"))
+        return names.firstOrNull().toString()
     }
 
     fun textFilter(text: String) : Int{

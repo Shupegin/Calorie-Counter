@@ -85,7 +85,7 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel) {
                 )
             )
             Button(onClick = {
-                val dish = Dish(category = category.toLowerCase(), name = name.toLowerCase(), calories = calories.toIntOrNull() ?: 0)
+                val dish = Dish(category = category.toLowerCase().trim(), name = name.toLowerCase().trim(), calories = calories.toIntOrNull() ?: 0)
                 viewModel.addDatabase(dish = dish)
             }) {
                 Text(text = "Добавить в базу")
