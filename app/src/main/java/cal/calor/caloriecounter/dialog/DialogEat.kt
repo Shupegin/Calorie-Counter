@@ -1,13 +1,10 @@
 package cal.calor.caloriecounter.dialog
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +18,6 @@ import cal.calor.caloriecounter.pojo.FoodModel
 
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun dialog(dialogState: MutableState<Boolean>,
            viewModel: MainViewModel,
@@ -47,10 +43,10 @@ fun dialog(dialogState: MutableState<Boolean>,
                     .fillMaxWidth()
             ) {
 
-                Card() {
+                Card(modifier = Modifier
+                    .fillMaxWidth()){
                     Column(
-                        modifier = Modifier
-                            .background(Color.White),
+                        modifier = Modifier,
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
 

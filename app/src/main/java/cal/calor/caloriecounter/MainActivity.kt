@@ -66,13 +66,12 @@ class MainActivity : ComponentActivity() {
     private val updateType = AppUpdateType.FLEXIBLE
     private val AVAILABLE = "Available"
     @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
-        if(false) {
+        if(true) {
             if (updateType == AppUpdateType.FLEXIBLE) {
                 appUpdateManager.registerListener(installStateUpdateListener)
             }
@@ -91,7 +90,7 @@ class MainActivity : ComponentActivity() {
                 val status by connectivityObserver.observe().collectAsState(
                     initial = ConnectivityObserver.Status.Available
                 )
-                if(status.name.equals(AVAILABLE)){
+                if(status.name == AVAILABLE){
                     LoginApplication(
                         viewModel = viewModelLogin,
                         viewModelRegistration = viewModelRegistration,
