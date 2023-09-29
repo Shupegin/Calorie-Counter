@@ -71,7 +71,8 @@ class MainActivity : ComponentActivity() {
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
-        if(true) {
+        if(false) {
+
             if (updateType == AppUpdateType.FLEXIBLE) {
                 appUpdateManager.registerListener(installStateUpdateListener)
             }
