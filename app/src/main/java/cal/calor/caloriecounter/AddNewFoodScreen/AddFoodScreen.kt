@@ -1,5 +1,7 @@
 package cal.calor.caloriecounter.AddNewFoodScreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.toLowerCase
+import com.google.android.material.snackbar.Snackbar
 
 
 @Composable
-fun AddFoodScreen(viewModel: AddFoodScreenViewModel) {
+fun AddFoodScreen(viewModel: AddFoodScreenViewModel, context: Context) {
     var  category by remember { mutableStateOf("") }
     var  name by remember { mutableStateOf("") }
     var  calories by remember { mutableStateOf("") }
@@ -43,8 +46,9 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel) {
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Yellow,
-                    unfocusedBorderColor = Color.Red
+                    focusedBorderColor = Color.Green,
+                    unfocusedBorderColor = Color.Red,
+                    cursorColor = Color.Green
                 )
             )
             OutlinedTextField(
@@ -61,8 +65,9 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel) {
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Yellow,
-                    unfocusedBorderColor = Color.Red
+                    focusedBorderColor = Color.Green,
+                    unfocusedBorderColor = Color.Red,
+                    cursorColor = Color.Green
                 )
             )
 
@@ -80,13 +85,15 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel) {
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Yellow,
-                    unfocusedBorderColor = Color.Red
+                    focusedBorderColor = Color.Green,
+                    unfocusedBorderColor = Color.Red,
+                    cursorColor = Color.Green
                 )
             )
             Button(onClick = {
-                val dish = Dish(category = category.toLowerCase().trim(), name = name.toLowerCase().trim(), calories = calories.toIntOrNull() ?: 0)
+                val dish = Dish(category = category.lowercase().trim(), name = name.lowercase().trim(), calories = calories.toIntOrNull() ?: 0)
                 viewModel.addDatabase(dish = dish)
+
             }) {
                 Text(text = "Добавить в базу")
 

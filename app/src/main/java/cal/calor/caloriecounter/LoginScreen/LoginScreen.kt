@@ -57,7 +57,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
+                    unfocusedBorderColor = Color.Green,
+                    cursorColor = Color.Black
+
                 )
             )
 
@@ -76,7 +78,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
+                    unfocusedBorderColor = Color.Green,
+                    cursorColor = Color.Black
                 )
             )
             Button(onClick = {

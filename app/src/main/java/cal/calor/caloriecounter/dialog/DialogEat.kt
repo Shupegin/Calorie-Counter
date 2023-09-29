@@ -68,7 +68,8 @@ fun dialog(dialogState: MutableState<Boolean>,
                                 )
                             }, colors = TextFieldDefaults.outlinedTextFieldColors(
                                 focusedBorderColor = Color.Red,
-                                unfocusedBorderColor = Color.Green
+                                unfocusedBorderColor = Color.Green,
+                                cursorColor = Color.Red
                             )
                         )
 
@@ -87,7 +88,8 @@ fun dialog(dialogState: MutableState<Boolean>,
                                 )
                             }, colors = TextFieldDefaults.outlinedTextFieldColors(
                                 focusedBorderColor = Color.Red,
-                                unfocusedBorderColor = Color.Green
+                                unfocusedBorderColor = Color.Green,
+                                cursorColor = Color.Red
                             )
                         )
 
@@ -106,7 +108,9 @@ fun dialog(dialogState: MutableState<Boolean>,
                                 )
                             }, colors = TextFieldDefaults.outlinedTextFieldColors(
                                 focusedBorderColor = Color.Red,
-                                unfocusedBorderColor = Color.Green
+                                unfocusedBorderColor = Color.Green,
+                                cursorColor = Color.Red
+
                             )
                         )
 

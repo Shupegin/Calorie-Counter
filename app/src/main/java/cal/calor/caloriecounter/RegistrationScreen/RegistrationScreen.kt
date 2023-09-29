@@ -59,7 +59,8 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
+                    unfocusedBorderColor = Color.Green,
+                    cursorColor = Color.Black
                 )
             )
 
@@ -78,7 +79,8 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
+                    unfocusedBorderColor = Color.Green,
+                    cursorColor = Color.Black
                 )
             )
 
@@ -97,27 +99,29 @@ fun RegistrationScreen(navController: NavController,viewModel: RegistrationViewM
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
+                    unfocusedBorderColor = Color.Green,
+                    cursorColor = Color.Black
                 )
             )
-            OutlinedTextField(
-                value = calories,
-                onValueChange = {it.let {
-                    calories = it
-                }},
-                label = {
-                    Text(
-                        text = "Введите ориентрировочное колличество каллорий в день",
-                        style = TextStyle(
-                            color = Color.Black,
-                        )
-                    )
-                },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.Green
-                )
-            )
+//            OutlinedTextField(
+//                value = calories,
+//                onValueChange = {it.let {
+//                    calories = it
+//                }},
+//                label = {
+//                    Text(
+//                        text = "Введите ориентрировочное колличество каллорий в день",
+//                        style = TextStyle(
+//                            color = Color.Black,
+//                        )
+//                    )
+//                },
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    focusedBorderColor = Color.Black,
+//                    unfocusedBorderColor = Color.Green,
+//                    cursorColor = Color.Black
+//                )
+//            )
             Button(onClick = {
                 if (error_e.value != true){
                     viewModel.singUp(email = email, password = password, calories = calories.toIntOrNull() ?: 0)
