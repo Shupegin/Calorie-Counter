@@ -117,11 +117,11 @@ fun dialog(dialogState: MutableState<Boolean>,
                             Spacer(modifier = Modifier.padding(end = 20.dp))
                             Button(onClick = {
 
-                                var _category = viewModel.splitName(userFood)
+                                val _category = viewModel.splitName(userFood).lowercase().trim()
 
                                 val foodModel = FoodModel(
                                     category= _category,
-                                    food = userFood,
+                                    food = userFood.lowercase().trim(),
                                     calories = numberOfCalories.toIntOrNull() ?: 0,
                                     gramm = numberOfGrams.toIntOrNull() ?: 0
                                 )
@@ -136,12 +136,12 @@ fun dialog(dialogState: MutableState<Boolean>,
                         }
 
                         Button(onClick = {
-                            var _category = viewModel.splitName(userFood)
-
+                            val _category = viewModel.splitName(userFood).lowercase().trim()
+                            val _userfood =  userFood.lowercase().trim()
 
                             val foodModel = FoodModel(
                                 category= _category,
-                                food = userFood,
+                                food = _userfood,
                                 calories = numberOfCalories.toIntOrNull() ?: 0,
                                 gramm = numberOfGrams.toIntOrNull() ?: 0
                             )

@@ -234,6 +234,7 @@ class MainViewModel(application: Application): AndroidViewModel(application){
         var calories = 0
         categoryFirebase(foodModel)
         val userReference : DatabaseReference?
+        Log.d("RRR","4 = ${result}")
 
         userReference = firebaseDatabase?.getReference("food/${result}")
         userReference?.addValueEventListener(object : ValueEventListener {
@@ -242,7 +243,8 @@ class MainViewModel(application: Application): AndroidViewModel(application){
                 for(dataSnapshot in snapshot.children){
                     val value = dataSnapshot.getValue(FoodSearchFirebase::class.java)
                     Log.d("RRR","5 = ${value?.name}")
-                    if(value?.name?.contains(foodModel.food.toString())!!){
+                    if(value?.name?.equals(foodModel.food.toString())!!){
+                        Log.d("RRR","6 = ${value?.name}")
                         calories = value?.calories ?: 0
                     }
                 }

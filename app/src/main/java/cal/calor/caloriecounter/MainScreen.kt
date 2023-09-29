@@ -48,8 +48,7 @@ fun MainScreen(
             item.forEach{ item ->
                 BottomNavigationItem(
                     selected = currentRout == item.screen.route,
-                    onClick = { navigationState.navigateTo(item.screen.route)
-                              },
+                    onClick = { navigationState.navigateTo(item.screen.route)},
                     icon = {
                         Icon(item.icon, contentDescription = null, )
                     },

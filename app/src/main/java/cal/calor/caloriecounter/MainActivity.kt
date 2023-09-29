@@ -150,11 +150,11 @@ class MainActivity : ComponentActivity() {
     private val installStateUpdateListener = InstallStateUpdatedListener { state->
         if(state.installStatus() == InstallStatus.DOWNLOADED){
             Toast.makeText(applicationContext,
-                "DownLoad successful.Restarting app in 5 seconds",
+                "DownLoad successful.Restarting app in 10 seconds",
                 Toast.LENGTH_LONG
             ).show()
             lifecycleScope.launch {
-                delay(5.seconds)
+                delay(10.seconds)
                 appUpdateManager.completeUpdate()
             }
         }
