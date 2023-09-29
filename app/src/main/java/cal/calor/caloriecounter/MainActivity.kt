@@ -198,7 +198,7 @@ fun LoginApplication(viewModel: LoginViewModel,
         composable("login_page", content = { LoginScreen(navController = navController,viewModel= viewModel, owner = owner, context = context)})
         composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration,owner = owner, context = context)})
         composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context,navController = navController) })
-        composable("Add_food_screen", content = {AddFoodScreen(viewModel= viewModelAddFoodScreen,context)})
+        composable("Add_food_screen", content = {AddFoodScreen(viewModel= viewModelAddFoodScreen,navController,context)})
     })
 
 }
