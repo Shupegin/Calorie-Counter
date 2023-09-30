@@ -52,27 +52,6 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel,navController: NavController
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "Введите данные")
                     OutlinedTextField(
-                        value = category,
-                        onValueChange = {
-                            it.let {
-                                category = it
-                            }
-                        },
-                        label = {
-                            Text(
-                                text = "Название категории",
-                                style = TextStyle(
-                                    color = Color.Black,
-                                )
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Green,
-                            unfocusedBorderColor = Color.Red,
-                            cursorColor = Color.Green
-                        )
-                    )
-                    OutlinedTextField(
                         value = name,
                         onValueChange = {
                             it.let {
@@ -116,8 +95,9 @@ fun AddFoodScreen(viewModel: AddFoodScreenViewModel,navController: NavController
                         )
                     )
                     Button(onClick = {
+                        val _category = viewModel.splitName(name).lowercase().trim()
                         val dish = Dish(
-                            category = category.lowercase().trim(),
+                            category = _category,
                             name = name.lowercase().trim(),
                             calories = calories.toIntOrNull() ?: 0
                         )

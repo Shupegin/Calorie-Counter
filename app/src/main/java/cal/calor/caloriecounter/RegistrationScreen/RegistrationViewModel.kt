@@ -38,7 +38,7 @@ class RegistrationViewModel : ViewModel() {
             auth?.createUserWithEmailAndPassword(email,password)?.addOnSuccessListener {
                 val fireBaseUser : FirebaseUser? = it.user
 
-                val user = fireBaseUser?.let { it1 -> User(it1.uid,"Дима",calories) }
+                val user = fireBaseUser?.let { it1 -> User(it1.uid,calories) }
 
                 user?.id?.let { it1 -> userReference?.child(it1)?.setValue(user) }
 

@@ -12,4 +12,9 @@ class AddFoodScreenViewModel : ViewModel() {
             reference.setValue(dish)
         }
     }
+
+    fun splitName(name: String): String {
+        val names = name.trim().split(Regex("\\s+"))
+        return names.firstOrNull().toString()
+    }
 }
