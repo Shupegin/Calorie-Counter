@@ -2,24 +2,32 @@ package cal.calor.caloriecounter
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
+
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +46,7 @@ import cal.calor.caloriecounter.RegistrationScreen.RegistrationScreen
 import cal.calor.caloriecounter.RegistrationScreen.RegistrationViewModel
 import cal.calor.caloriecounter.internet.ConnectivityObserver
 import cal.calor.caloriecounter.internet.NetworkConnectivityObserver
+import cal.calor.caloriecounter.ui.theme.BackgroundGray
 import cal.calor.caloriecounter.ui.theme.CalorieCounterTheme
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -68,6 +77,8 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
@@ -87,6 +98,7 @@ class MainActivity : ComponentActivity() {
              mainViewModel.loadFirebaseData(it)
          })
         setContent {
+            StatusBarColor(BackgroundGray)
             CalorieCounterTheme {
                 val status by connectivityObserver.observe().collectAsState(
                     initial = ConnectivityObserver.Status.Available
@@ -201,6 +213,20 @@ fun LoginApplication(viewModel: LoginViewModel,
         composable("Add_food_screen", content = {AddFoodScreen(viewModel= viewModelAddFoodScreen,navController,context)})
     })
 
+}
+
+@Composable
+fun StatusBarColor(color: Color) {
+    val view = LocalView.current
+    val darkTheme = isSystemInDarkTheme()
+
+    if (!view.isInEditMode) {
+        SideEffect {
+            (view.context as Activity).window.statusBarColor = color.toArgb()
+            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !darkTheme
+            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightNavigationBars = !darkTheme
+        }
+    }
 }
 
 

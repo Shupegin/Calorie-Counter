@@ -28,6 +28,7 @@ import com.google.firebase.database.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Credentials
 import java.text.SimpleDateFormat
@@ -231,34 +232,34 @@ class MainViewModel(application: Application): AndroidViewModel(application){
     }
 
     fun loadFirebaseFood(foodModel : FoodModel) {
-        var calories = 0
-        categoryFirebase(foodModel)
-        val userReference : DatabaseReference?
-        Log.d("RRR","4 = ${result}")
-
-        userReference = firebaseDatabase?.getReference("food/${result}")
-        userReference?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var result = 0
-                for(dataSnapshot in snapshot.children){
-                    val value = dataSnapshot.getValue(FoodSearchFirebase::class.java)
-                    Log.d("RRR","5 = ${value?.name}")
-                    if(value?.name?.equals(foodModel.food.toString())!!){
-                        Log.d("RRR","6 = ${value?.name}")
-                        calories = value?.calories ?: 0
+        viewModelScope.launch {
+            var calories = 0
+            categoryFirebase(foodModel)
+            delay(300)
+            val userReference : DatabaseReference?
+            userReference = firebaseDatabase?.getReference("food/${result}")
+            userReference?.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var result = 0
+                    for(dataSnapshot in snapshot.children){
+                        val value = dataSnapshot.getValue(FoodSearchFirebase::class.java)
+                        if(value?.name?.equals(foodModel.food.toString())!!){
+                            calories = value?.calories ?: 0
+                        }
                     }
-                }
-                if (calories != 0){
+                    if (calories != 0){
 //                    calories /= size
-                    result = (foodModel.gramm?: 0) * calories / 100
+                        result = (foodModel.gramm?: 0) * calories / 100
+                    }
+
+                    _calories.value = result.toString()
                 }
 
-                _calories.value = result.toString()
-            }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
     }
 
    private fun categoryFirebase(foodModel: FoodModel){

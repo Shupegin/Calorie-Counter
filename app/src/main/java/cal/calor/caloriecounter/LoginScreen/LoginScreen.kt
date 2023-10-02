@@ -41,7 +41,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
         .background(BackgroundGray),
         contentAlignment = Alignment.Center
     ){
-        Column() {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             OutlinedTextField(
                 value = email,
                 onValueChange = {it.let {
@@ -94,18 +94,13 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
             }) {
                 Text(text = "Войти")
             }
-
-            Row {
-                Text(text = "Восстановление пароля")
-                Spacer(Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(bottom = 20.dp))
                 Text(text = "Регистрация", modifier = Modifier.clickable(onClick = {
                     navController.navigate("register_page"){
                         popUpTo = navController.graph.startDestinationId
                         launchSingleTop = true
                     }
                 }))
-
-            }
         }
     }
 }
