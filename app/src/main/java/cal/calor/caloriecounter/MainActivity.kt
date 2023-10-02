@@ -117,10 +117,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
-
-
     }
 
     override fun onResume() {

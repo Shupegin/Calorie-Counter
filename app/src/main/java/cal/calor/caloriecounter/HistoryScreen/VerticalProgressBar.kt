@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -29,26 +31,6 @@ fun VerticalProgressBar(viewModel: MainViewModel,
     var progress by remember { mutableStateOf(0f) }
     var listUsers = viewModel.addListHistoryCalories.observeAsState(listOf())
     var day = viewModel.addDay.observeAsState()
-
-
-
-
-//    for(itemUsers in listUsers.value){
-//        if (itemUsers.dailyCalories != null) {
-//            val caloriesPerDay = 2000
-//            val calories  = itemUsers.dailyCalories!!.toFloat() / (caloriesPerDay)
-//
-//            progress = calories
-//        }
-//
-//
-//    }
-
-
-
-
-
-
 
     LazyRow(modifier = Modifier
         .fillMaxWidth()
@@ -80,7 +62,7 @@ fun VerticalProgressBar(viewModel: MainViewModel,
                     modifier = Modifier,
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "${day.value}")
+                    Text(text = "${day.value}",color = Color.White)
                 }
                 Row(
                     modifier = Modifier
@@ -131,7 +113,8 @@ fun VerticalProgressBar(viewModel: MainViewModel,
                             // .padding(horizontal = 20.dp)
                             //.fillMaxWidth()
                             ,
-                            text = "${it.dailyCalories}"
+                            text = "${it.dailyCalories}",
+                            color = Color.White
                         )
                     }
                 }
