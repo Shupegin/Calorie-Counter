@@ -2,6 +2,7 @@ package cal.calor.caloriecounter.LoginScreen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import cal.calor.caloriecounter.ui.theme.BackgroundGray
+import kotlinx.coroutines.delay
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -29,11 +31,29 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: L
     var password by remember { mutableStateOf("") }
     val error = viewModel.error.observeAsState("")
     val error_e = viewModel.error_e.observeAsState()
-    viewModel.user.observe(owner, androidx.lifecycle.Observer {
-        navController.navigate("activity_main") {
+    var startAnimation by remember { mutableStateOf(false) }
+    val userState = viewModel.user.observeAsState()
+
+//    userState?.let {
+//
+//        navController.navigate("activity_main") {
+//            popUpTo(0)
+//        }
+//    }
+
+    LaunchedEffect(key1 = true){
+        userState?.let {
+            startAnimation = true
+            delay(100)
+            navController.navigate("activity_main") {
                 popUpTo(0)
+            }
         }
-    })
+    }
+
+
+
+
 
 
     Box(modifier = Modifier

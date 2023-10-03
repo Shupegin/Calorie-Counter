@@ -1,6 +1,10 @@
 package cal.calor.caloriecounter
 
 import android.annotation.SuppressLint
+import android.nfc.cardemulation.CardEmulation
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,6 +12,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
@@ -18,8 +24,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +48,15 @@ fun HomeScreen(
     onItem: () -> Unit,
     paddingValues: PaddingValues
 ){
+    var calories by remember { mutableStateOf(0) }
+
+    val animatedColor = animateColorAsState(
+        Color.Green,
+        animationSpec = tween(500, easing = LinearEasing), label = ""
+    )
+
+
+
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -53,6 +74,8 @@ fun HomeScreen(
 
           list?.forEach{(dataCurrent,listFood)->
 
+
+
               stickyHeader{
                   Box(modifier = Modifier
                       .fillMaxWidth()
@@ -63,7 +86,7 @@ fun HomeScreen(
                       Text(text = dataCurrent.toString(), style = MaterialTheme.typography.h6)
                   }
               }
-              items(listFood, key= {it.food_id}){foodModel ->
+              items(listFood, key= {it.food_id},){foodModel ->
                   val dismissState = rememberDismissState()
                   if(dismissState.isDismissed(DismissDirection.EndToStart)){
                       viewModel.deleteFood(foodModel)
@@ -90,14 +113,27 @@ fun HomeScreen(
 
               }
             item() {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
+                Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.BottomEnd,
+
+
+                    ){
+                    Card(modifier = Modifier,
+                        shape = RoundedCornerShape(12.dp),
+                        backgroundColor = animatedColor.value,
+                        elevation =  10.dp
+
                     ) {
-                    val totalCalories = viewModel.getCalories(listFood)
-                    Text(text = "Сумма калорий = $totalCalories ", modifier = Modifier.background(color = Color.Cyan) )
+                        Box(modifier = Modifier
+                            .padding(6.dp),
+                        ) {
+                            val totalCalories = viewModel.getCalories(listFood)
+                            calories  = totalCalories
+                            Text(text = "Сумма калорий = $totalCalories ")
+                        }
+                    }
                 }
+
             }
           }
       }
