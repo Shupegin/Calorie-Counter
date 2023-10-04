@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import cal.calor.caloriecounter.ui.theme.BackgroundGray
 import kotlinx.coroutines.delay
@@ -29,31 +30,13 @@ import kotlinx.coroutines.delay
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel,owner: LifecycleOwner, context : Context){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val error = viewModel.error.observeAsState("")
     val error_e = viewModel.error_e.observeAsState()
-    var startAnimation by remember { mutableStateOf(false) }
-    val userState = viewModel.user.observeAsState()
 
-//    userState?.let {
-//
-//        navController.navigate("activity_main") {
-//            popUpTo(0)
-//        }
-//    }
-
-    LaunchedEffect(key1 = true){
-        userState?.let {
-            startAnimation = true
-            delay(100)
-            navController.navigate("activity_main") {
-                popUpTo(0)
-            }
+    viewModel.user.observe(owner, Observer {
+        navController.navigate("activity_main") {
+            popUpTo(0)
         }
-    }
-
-
-
-
+    })
 
 
     Box(modifier = Modifier
