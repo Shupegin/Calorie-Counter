@@ -28,21 +28,21 @@ import com.google.zxing.integration.android.IntentIntegrator
 
 
 @Composable
-fun ProfileScreen(viewModel: MainViewModel,
+fun ProfileScreen(viewModelProf : ProfileViewModel,
                   paddingValues: PaddingValues,
                   owner: LifecycleOwner,
                   context: Context,
                   navController: NavController
 ){
     var clientID = ""
-     viewModel.client.observe(owner, Observer {
+    viewModelProf.client.observe(owner, Observer {
          clientID = it
-         viewModel.generateQR(it)
+        viewModelProf.generateQR(it)
      })
     var imageQR  =  Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888)
 
 
-    viewModel.imageQR.observe(owner, Observer {
+    viewModelProf.imageQR.observe(owner, Observer {
         imageQR = it
     })
     Box(modifier = Modifier

@@ -42,6 +42,7 @@ import cal.calor.caloriecounter.AddNewFoodScreen.AddFoodScreenViewModel
 import cal.calor.caloriecounter.InternetScreen.CheckInternetScreen
 import cal.calor.caloriecounter.LoginScreen.LoginScreen
 import cal.calor.caloriecounter.LoginScreen.LoginViewModel
+import cal.calor.caloriecounter.ProfileScreen.ProfileViewModel
 import cal.calor.caloriecounter.RegistrationScreen.RegistrationScreen
 import cal.calor.caloriecounter.RegistrationScreen.RegistrationViewModel
 import cal.calor.caloriecounter.internet.ConnectivityObserver
@@ -69,6 +70,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var viewModelLogin: LoginViewModel
     private lateinit var viewModelRegistration: RegistrationViewModel
     private lateinit var viewModelAddFoodScreen: AddFoodScreenViewModel
+    private lateinit var viewModelProf: ProfileViewModel
     private lateinit var connectivityObserver: ConnectivityObserver
 
     private lateinit var appUpdateManager: AppUpdateManager
@@ -93,6 +95,7 @@ class MainActivity : ComponentActivity() {
         viewModelLogin = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModelRegistration = ViewModelProvider(this)[RegistrationViewModel::class.java]
         viewModelAddFoodScreen = ViewModelProvider(this)[AddFoodScreenViewModel::class.java]
+        viewModelProf = ViewModelProvider(this)[ProfileViewModel::class.java]
 
          mainViewModel.userListDAO.observe(this, Observer {
              mainViewModel.loadFirebaseData(it)
@@ -106,6 +109,7 @@ class MainActivity : ComponentActivity() {
                 if(status.name == AVAILABLE){
                     LoginApplication(
                         viewModel = viewModelLogin,
+                        viewModelProf = viewModelProf,
                         viewModelRegistration = viewModelRegistration,
                         mainViewModel = mainViewModel,
                         viewModelAddFoodScreen = viewModelAddFoodScreen,
@@ -194,6 +198,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoginApplication(viewModel: LoginViewModel,
+                     viewModelProf : ProfileViewModel,
                      viewModelRegistration: RegistrationViewModel,
                      mainViewModel : MainViewModel,
                      viewModelAddFoodScreen : AddFoodScreenViewModel,
@@ -205,7 +210,7 @@ fun LoginApplication(viewModel: LoginViewModel,
     NavHost(navController = navController, startDestination = "login_page", builder ={
         composable("login_page", content = { LoginScreen(navController = navController,viewModel= viewModel, owner = owner, context = context)})
         composable("register_page", content = { RegistrationScreen(navController = navController, viewModel= viewModelRegistration,owner = owner, context = context)})
-        composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel, owner = owner, context = context,navController = navController) })
+        composable("activity_main", content = { MainScreen(mainViewModel = mainViewModel,viewModelProf = viewModelProf, owner = owner, context = context,navController = navController) })
         composable("Add_food_screen", content = {AddFoodScreen(viewModel= viewModelAddFoodScreen,navController,context)})
     })
 

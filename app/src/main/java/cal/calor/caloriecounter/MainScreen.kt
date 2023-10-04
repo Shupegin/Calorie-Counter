@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import cal.calor.caloriecounter.HistoryScreen.HistoryScreen
 import cal.calor.caloriecounter.ProfileScreen.ProfileScreen
+import cal.calor.caloriecounter.ProfileScreen.ProfileViewModel
 import cal.calor.caloriecounter.dialog.dialog
 import cal.calor.caloriecounter.navigation.*
 import cal.calor.caloriecounter.ui.theme.BackgroundBottom
@@ -21,6 +22,7 @@ import cal.calor.caloriecounter.ui.theme.BackgroundBottom
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel,
+    viewModelProf : ProfileViewModel,
     owner: LifecycleOwner,
     context: Context,
     navController: NavController
@@ -65,7 +67,7 @@ fun MainScreen(
             navHostController = navigationState.navHostController,
             homeScreenContent =    { HomeScreen(viewModel = mainViewModel, paddingValues = paddingValues, onItem = {dialogState.value = true})},
             historyScreenContent = { HistoryScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner)},
-            profileScreenContent = { ProfileScreen(viewModel = mainViewModel, paddingValues = paddingValues,owner,context, navController)})
+            profileScreenContent = { ProfileScreen(viewModelProf = viewModelProf , paddingValues = paddingValues,owner,context, navController)})
     }
 }
 
